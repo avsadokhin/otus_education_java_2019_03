@@ -16,7 +16,8 @@ public class DIYarrayList<T> implements List<T> {
 
     public DIYarrayList(int capacity) {
 
-        if (capacity < 0) throw new IllegalArgumentException("Wrong value of parameter capacity: " + capacity);
+        if (capacity < 0)
+            throw new IllegalArgumentException("Wrong value of parameter capacity: " + capacity + ". Capacity must be >=0");
         this.diyElementData = (capacity == 0) ? EMPTY_DIYELEMENTDATA : new Object[capacity];
 
     }
@@ -24,12 +25,9 @@ public class DIYarrayList<T> implements List<T> {
     public DIYarrayList(Collection<? extends T> c) {
         diyElementData = c.toArray();
         if ((size = diyElementData.length) != 0) {
-            // defend against c.toArray (incorrectly) not returning Object[]
-            // (see e.g. https://bugs.openjdk.java.net/browse/JDK-6260652)
             if (diyElementData.getClass() != Object[].class)
                 diyElementData = Arrays.copyOf(diyElementData, size, Object[].class);
         } else {
-            // replace with empty array.
             this.diyElementData = new Object[]{};
         }
     }
@@ -60,8 +58,6 @@ public class DIYarrayList<T> implements List<T> {
     }
 
     public Object[] extendElementData(int requiredCapacity) {
-        /*return elementData = Arrays.copyOf(elementData,
-                newCapacity(minCapacity));*/
 
         int maxSize = Integer.MAX_VALUE - 8;
         int newCapacity = diyElementData.length * 3 / 2 + 1;
@@ -118,16 +114,6 @@ public class DIYarrayList<T> implements List<T> {
 
         return (T[]) Arrays.copyOf(diyElementData, size);
     }
-
-    /*   public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
-           @SuppressWarnings("unchecked")
-           T[] copy = ((Object)newType == (Object)Object[].class)
-                   ? (T[]) new Object[newLength]
-                   : (T[]) Array.newInstance(newType.getComponentType(), newLength);
-           System.arraycopy(original, 0, copy, 0,
-                   Math.min(original.length, newLength));
-           return copy;
-           */
 
     @Override
     public boolean remove(Object o) {
@@ -201,19 +187,94 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        return (ListIterator<T>) Arrays.asList(diyElementData).listIterator();
-
+        return new ListIteratorImpl(0);
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        return (ListIterator<T>) Arrays.asList(diyElementData).listIterator(index);
+        return new ListIteratorImpl(index);
     }
+
+
+    private class ListIteratorImpl implements ListIterator<T> {
+        int pos;
+        int pos_returned = -1;
+
+        ListIteratorImpl(int index) {
+            pos = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return pos != size;
+        }
+
+        @Override
+        public T next() {
+            if (pos > diyElementData.length)
+                throw new NoSuchElementException("Position index " + pos + " is out of length " + diyElementData.length);
+            if (pos > size) throw new IndexOutOfBoundsException("Position index " + pos + " is out of size " + size);
+
+            pos_returned = pos;
+            pos++;
+            return (T) diyElementData[pos_returned];
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return pos != 0;
+        }
+
+        @Override
+        public T previous() {
+            int indx = pos - 1;
+            if (indx < 0)
+                throw new NoSuchElementException("No such element for position index " + indx);
+
+            pos_returned = indx;
+            pos = indx;
+
+            return (T) diyElementData[pos_returned];
+        }
+
+        @Override
+        public int nextIndex() {
+            return pos;
+        }
+
+        @Override
+        public int previousIndex() {
+            return pos - 1;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException(EXC_MSG_NOT_IMPL);
+        }
+
+        @Override
+        public void set(T t) {
+
+            if (pos_returned < 0)
+                throw new IndexOutOfBoundsException("Index cannot be < 0. Current value:" + pos_returned);
+
+            DIYarrayList.this.set(pos_returned, t); //IndexOutOfBoundsException
+
+        }
+
+        @Override
+        public void add(T t) {
+            throw new UnsupportedOperationException(EXC_MSG_NOT_IMPL);
+        }
+    }
+
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        if (fromIndex < 0 || toIndex > size) throw new IndexOutOfBoundsException("Index out of bounds ");
-        if (fromIndex > toIndex) throw new IllegalArgumentException(" Illegal index from and to parameters");
+        if (fromIndex < 0 || toIndex > size)
+            throw new IndexOutOfBoundsException("Index out of bounds. fromIndex must be >=0, toIndex <= " + size);
+        if (fromIndex > toIndex)
+            throw new IllegalArgumentException(" Illegal index from '" + fromIndex + "' and to '" + toIndex + "' parameters. fromIndex must be <= toIndex");
 
 
         return (List<T>) Arrays.asList(Arrays.copyOfRange(diyElementData, fromIndex, toIndex));
