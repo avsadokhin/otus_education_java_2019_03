@@ -11,5 +11,16 @@
 
     <artifactId>hw03-annotations</artifactId>
 
+    <build>
+        <finalName>${project.name}${buildNumber}</finalName>
 
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.3.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
