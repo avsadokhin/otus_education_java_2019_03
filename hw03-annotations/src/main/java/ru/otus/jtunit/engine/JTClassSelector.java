@@ -1,22 +1,19 @@
 package ru.otus.jtunit.engine;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
-public class JTClassSelector {
+public class  JTClassSelector {
     private final String className;
     private Class<?> aClass;
 
-    public JTClassSelector(Class<?> aClass) {
+    JTClassSelector(Class<?> aClass) {
         this.className = aClass.getName();
         this.aClass = aClass;
     }
 
-    public String getClassName() {
+    String getClassName() {
         return className;
     }
 
-    public Class<?> getJavaClass() {
+    Class<?> getJavaClass() {
         return aClass;
     }
 

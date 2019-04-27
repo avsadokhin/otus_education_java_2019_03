@@ -1,5 +1,5 @@
 package ru.otus.jtunit.engine;
 
-public interface JTUnitStarter {
+public interface JTUnitProcess {
     void start(JTUnitRequest request);
 }

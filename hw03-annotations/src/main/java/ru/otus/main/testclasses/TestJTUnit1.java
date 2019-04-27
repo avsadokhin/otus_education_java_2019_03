@@ -1,8 +1,8 @@
-package ru.otus.main;
+package ru.otus.main.testclasses;
 
 import ru.otus.jtunit.annotations.*;
 
-class TestJTUnit1 {
+public class TestJTUnit1 {
 
     TestJTUnit1() {
         System.out.println("Call of the constructor");
@@ -12,6 +12,11 @@ class TestJTUnit1 {
     @BeforeAll
     static void beforeAll() {
         System.out.println("BeforeAll");
+    }
+
+    @BeforeAll
+    static void beforeAll2() {
+        System.out.println("BeforeAll2");
     }
 
     @AfterAll
@@ -36,17 +41,31 @@ class TestJTUnit1 {
     }
 
     @Test
-    void testOne() {
-        System.out.println("testOne");
+    void testThree() {
+        System.out.println("testThree");
     }
 
     @Test
-    void testTwo() {
+    void testOne() throws Exception {
+        System.out.println("testOne");
+        throw new Exception("Exception in method testOne!");
+
+
+    }
+
+    @Test
+    public void testTwo() {
         System.out.println("testTwo");
     }
+
 
     @AfterEach
     void afterEach() {
         System.out.println("AfterEach");
+    }
+
+    @AfterEach
+    void afterEach2() {
+        System.out.println("AfterEach2");
     }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 public class JTUnitRequest {
 
     private List<JTClassSelector> classList = new ArrayList();
-    private List<Method> methodList = new ArrayList<>();
 
     private JTUnitRequest() {
     }
@@ -41,25 +40,6 @@ public class JTUnitRequest {
             return JTUnitRequest.this;
         }
     }
-
-/*
-
-    public static JTUnitRequest request() {
-        return new JTUnitRequest();
-    }
-
-
-     public JTUnitRequest classList(List<? extends JTClassSelector> selectors) {
-        this.classList.addAll(selectors);
-        return this;
-    }
-
-
-    public JTUnitRequest selectors(JTClassSelector... selectors) {
-        this.selectors(Arrays.asList(selectors));
-        return this;
-    }
-*/
 
 
 }

@@ -1,12 +1,8 @@
-package ru.otus.main;
+package ru.otus.main.testclasses;
 
 import ru.otus.jtunit.annotations.*;
 
-class TestJTUnit2 {
-
-    TestJTUnit2() {
-        System.out.println("Call of the constructor");
-    }
+public class TestJTUnit2 {
 
 
     @BeforeAll
