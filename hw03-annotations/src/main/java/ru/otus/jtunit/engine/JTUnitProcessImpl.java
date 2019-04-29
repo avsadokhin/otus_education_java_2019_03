@@ -20,7 +20,7 @@ public class JTUnitProcessImpl implements JTUnitProcess {
             System.out.println("Processing Class: " + classSelector.getClassName() + "...");
 
             try {
-                processor(classSelector);
+                processClass(classSelector);
             } catch (InstantiationException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
@@ -29,7 +29,33 @@ public class JTUnitProcessImpl implements JTUnitProcess {
 
     }
 
-    private void processor(JTClassSelector classSelector) throws InstantiationException, NoSuchMethodException {
+    private <T> T newInstance(Class<T> clazz) {
+
+        Constructor<T> declaredConstructor = null;
+        T inst = null;
+
+        try {
+            declaredConstructor = clazz.getDeclaredConstructor();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        if (declaredConstructor != null) {
+            try {
+                declaredConstructor.setAccessible(true);
+                inst = declaredConstructor.newInstance();
+
+
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            } finally {
+                declaredConstructor.setAccessible(false);
+            }
+        }
+        return inst;
+    }
+
+    private void processClass(JTClassSelector classSelector) throws InstantiationException, NoSuchMethodException {
         Class<?> clazz = classSelector.getJavaClass();
         List<Method> methods = Arrays.asList(clazz.getDeclaredMethods());
 
@@ -39,52 +65,49 @@ public class JTUnitProcessImpl implements JTUnitProcess {
         List<Method> afterAllList = methods.stream().filter(method -> method.isAnnotationPresent(AfterAll.class)).collect(Collectors.toList());
         List<Method> afterEachList = methods.stream().filter(method -> method.isAnnotationPresent(AfterEach.class)).collect(Collectors.toList());
 
-        final Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
-        Object instance = null;
-
+        boolean phaseSuccess = true;
         for (Method beforeAll : beforeAllList) {
-            invokeMethod(beforeAll, instance);
+            phaseSuccess = phaseSuccess && invokeMethod(beforeAll, new Object());
         }
 
-        if (declaredConstructor != null) {
-            try {
-                declaredConstructor.setAccessible(true);
-                instance = declaredConstructor.newInstance();
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            } finally {
-                declaredConstructor.setAccessible(false);
-            }
-        }
+        if (phaseSuccess) {
 
+            for (Method test : testList) {
+                phaseSuccess = true;
+                Object testInstance = newInstance(clazz);
 
-        for (Method test : testList) {
-            for (Method beforeEach : beforeEachList) {
-                invokeMethod(beforeEach, instance);
-            }
-            invokeMethod(test, instance);
+                for (Method beforeEach : beforeEachList) {
+                    phaseSuccess = phaseSuccess && invokeMethod(beforeEach, testInstance);
+                }
 
-            for (Method afterEach : afterEachList) {
-                invokeMethod(afterEach, instance);
+                if (phaseSuccess) invokeMethod(test, testInstance);
+
+                for (Method afterEach : afterEachList) {
+                    invokeMethod(afterEach, testInstance);
+                }
             }
         }
 
         for (Method afterAll : afterAllList) {
-            invokeMethod(afterAll, instance);
+            invokeMethod(afterAll, new Object());
         }
     }
 
-    private void invokeMethod(Method metod, Object instance) {
+    private boolean invokeMethod(Method method, Object instance) {
+        boolean isSuccess = true;
+        method.setAccessible(true);
 
-        metod.setAccessible(true);
         try {
-            metod.invoke(instance);
+            method.invoke(instance);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            isSuccess = false;
         } finally {
-            metod.setAccessible(false);
+            method.setAccessible(false);
         }
 
+        return isSuccess;
     }
+
 
 }

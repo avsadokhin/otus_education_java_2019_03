@@ -1,6 +1,6 @@
 package ru.otus.jtunit.engine;
 
-public class  JTClassSelector {
+public class  JTClassSelector{
     private final String className;
     private Class<?> aClass;
 

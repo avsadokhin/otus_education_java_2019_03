@@ -15,8 +15,10 @@ public class TestJTUnit1 {
     }
 
     @BeforeAll
-    static void beforeAll2() {
+    static void beforeAll2() throws Exception {
         System.out.println("BeforeAll2");
+        //     throw new Exception("Exception in method beforeAll2!");
+
     }
 
     @AfterAll
@@ -31,8 +33,9 @@ public class TestJTUnit1 {
     }
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws Exception {
         System.out.println("BeforeEach");
+              throw new Exception("Exception in method beforeEach!");
     }
 
     @BeforeEach
@@ -68,4 +71,6 @@ public class TestJTUnit1 {
     void afterEach2() {
         System.out.println("AfterEach2");
     }
+
+
 }
