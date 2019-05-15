@@ -24,6 +24,7 @@
         <module>hw01-maven</module>
         <module>hw02-collections</module>
         <module>hw03-annotations</module>
+        <module>hw04-byteCodes</module>
     </modules>
 
     <properties>
