@@ -10,7 +10,8 @@ public class Main {
             Object obj = ProxyLogger.build(TestInterface.class, new TestInterfaceImpl());
 
             TestInterface testObj = (TestInterface) obj;
-            testObj.makeRequest("Hello");
+            testObj.makeRequest("makeRequest with 2 pararms",1);
+            testObj.makeRequest2("makeRequest2 with 1 param");
         } catch (Exception e) {
             e.printStackTrace();
         }
