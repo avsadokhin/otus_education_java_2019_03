@@ -13,13 +13,13 @@ public class ProxyLogger {
     private ProxyLogger() {
     }
 
-    public static Object build(Class iface, Object impl) {
+    public static Object build( Object impl) {
         Set<Method> methodsAll = Set.of(impl.getClass().getDeclaredMethods());
         Set<Method> methodsLog = methodsAll.stream().filter(method -> method.isAnnotationPresent(Log.class)).collect(Collectors.toSet());
 
         ProxyLoggerInvocationHandler handler = new ProxyLoggerInvocationHandler(impl, methodsLog, getMethodsLogSignature(methodsLog));
 
-        return Proxy.newProxyInstance(impl.getClass().getClassLoader(), new Class[]{iface}, handler);
+        return Proxy.newProxyInstance(impl.getClass().getClassLoader(), impl.getClass().getInterfaces(), handler);
     }
 
     private static Set<String> getMethodsLogSignature(Set<Method> methods) {
@@ -35,12 +35,10 @@ public class ProxyLogger {
 
     private static class ProxyLoggerInvocationHandler implements InvocationHandler {
         private final Object impl;
-        private final Set<Method> logMethods;
         private final Set<String> logMethodsSignature;
 
         private ProxyLoggerInvocationHandler(Object impl, Set<Method> logMethods, Set<String> logMethodsSignature) {
             this.impl = impl;
-            this.logMethods = logMethods;
             this.logMethodsSignature = logMethodsSignature;
         }
 

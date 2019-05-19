@@ -2,7 +2,16 @@ package ru.otus.testclasses;
 
 import ru.otus.proxylog.Log;
 
-public class TestInterfaceImpl implements TestInterface {
+import java.io.IOException;
+import java.nio.CharBuffer;
+
+public class TestInterfaceImpl implements TestInterface, Readable {
+    @Override
+    @Log
+    public int read(CharBuffer cb) throws IOException {
+        return 0;
+    }
+
     @Log
     public void ownRequest (String param) {
         System.out.println("makeRequest2..." + param);
