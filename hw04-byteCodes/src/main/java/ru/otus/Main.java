@@ -8,15 +8,14 @@ import java.nio.CharBuffer;
 public class Main {
     public static void main(String[] args) {
         try {
-            Object obj = ProxyLogger.build(new TestInterfaceImpl());
-
-            TestInterface testObj = (TestInterface) obj;
+            TestInterface testObj = ProxyLogger.build(TestInterface.class, TestInterfaceImpl.class);
 
             testObj.makeRequest("makeRequest with 2 params",1);
             testObj.makeRequest2("makeRequest2 with 1 param");
 
-            Readable r = (Readable) obj;
-            r.read(CharBuffer.wrap("A"));
+            Readable testObj2 = ProxyLogger.build(Readable.class, TestInterfaceImpl.class);
+            String charBuffer = "A";
+            testObj2.read(CharBuffer.wrap(charBuffer));
 
         } catch (Exception e) {
             e.printStackTrace();

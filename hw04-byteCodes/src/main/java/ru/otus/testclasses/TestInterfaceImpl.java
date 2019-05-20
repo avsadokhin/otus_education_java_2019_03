@@ -9,6 +9,7 @@ public class TestInterfaceImpl implements TestInterface, Readable {
     @Override
     @Log
     public int read(CharBuffer cb) throws IOException {
+        System.out.println("Readable..." + cb);
         return 0;
     }
 

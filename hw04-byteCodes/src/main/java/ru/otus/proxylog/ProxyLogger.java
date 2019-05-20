@@ -1,6 +1,7 @@
 package ru.otus.proxylog;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -13,13 +14,13 @@ public class ProxyLogger {
     private ProxyLogger() {
     }
 
-    public static Object build( Object impl) {
-        Set<Method> methodsAll = Set.of(impl.getClass().getDeclaredMethods());
+    public static <T> T build( Class<?> iface, Class<?> impl) throws Exception {
+        Set<Method> methodsAll = Set.of(impl.getDeclaredMethods());
         Set<Method> methodsLog = methodsAll.stream().filter(method -> method.isAnnotationPresent(Log.class)).collect(Collectors.toSet());
 
-        ProxyLoggerInvocationHandler handler = new ProxyLoggerInvocationHandler(impl, methodsLog, getMethodsLogSignature(methodsLog));
+        ProxyLoggerInvocationHandler handler = new ProxyLoggerInvocationHandler(impl.getDeclaredConstructor().newInstance(), getMethodsLogSignature(methodsLog));
 
-        return Proxy.newProxyInstance(impl.getClass().getClassLoader(), impl.getClass().getInterfaces(), handler);
+        return (T) Proxy.newProxyInstance(impl.getClassLoader(), new Class[]{iface}, handler);
     }
 
     private static Set<String> getMethodsLogSignature(Set<Method> methods) {
@@ -34,10 +35,10 @@ public class ProxyLogger {
     }
 
     private static class ProxyLoggerInvocationHandler implements InvocationHandler {
-        private final Object impl;
+        private final Object  impl;
         private final Set<String> logMethodsSignature;
 
-        private ProxyLoggerInvocationHandler(Object impl, Set<Method> logMethods, Set<String> logMethodsSignature) {
+        private ProxyLoggerInvocationHandler( Object impl,  Set<String> logMethodsSignature) {
             this.impl = impl;
             this.logMethodsSignature = logMethodsSignature;
         }
