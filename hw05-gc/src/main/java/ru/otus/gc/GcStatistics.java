@@ -7,20 +7,18 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
 import javax.management.openmbean.CompositeData;
 import java.lang.management.GarbageCollectorMXBean;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LongSummaryStatistics;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class GcStatistics {
     private final BrenchmarkProcess process;
-    private List<GarbageCollectionNotificationInfo> notificationInfoList;
+    private CopyOnWriteArrayList<GarbageCollectionNotificationInfo> notificationInfoList;
     private boolean isOverLoad = false;
 
     public GcStatistics(BrenchmarkProcess process) {
         this.process = process;
-        this.notificationInfoList = new ArrayList<>();
+        this.notificationInfoList = new CopyOnWriteArrayList<>();
 
 
     }
@@ -39,12 +37,17 @@ public class GcStatistics {
             };
 
             emitter.addNotificationListener(listener, null, null);
-            //
+
             if (isOverLoad) emitter.removeNotificationListener(listener);
         }
     }
 
     public void start() {
+        Scanner console = new Scanner(System.in);
+
+        System.out.print("Hit enter key when ready...");
+        String name = console.nextLine();
+
         try {
             gatherNotificatioInfo();
         } catch (ListenerNotFoundException e) {
@@ -65,30 +68,24 @@ public class GcStatistics {
     }
 
     private void printNotificationReport() {
-        List<GarbageCollectionNotificationInfo> printList = new ArrayList();
-
-        printList.addAll(notificationInfoList);
-
-        //printList.forEach(info -> info.getGcInfo().System.out.println("GcName: " + info.getGcName() + "GcInfo: " + info.getGcInfo() + "GcAction: " + info.getGcAction() + "GcCause: " + info.getGcCause()));
-
-        System.out.println("Отчет");
+        System.out.println("Report:");
 
         Map<String, List<GarbageCollectionNotificationInfo>> infoByGcName
-                = printList.stream().collect(Collectors.groupingBy(GarbageCollectionNotificationInfo::getGcName));
+                = notificationInfoList.stream().collect(Collectors.groupingBy(GarbageCollectionNotificationInfo::getGcName));
+        // By gcName
+        infoByGcName.forEach((gcName, nameInfos) -> {
+                    System.out.println(gcName + ":\n");
+                    Map<Long, LongSummaryStatistics> minStatMap = nameInfos.stream().collect(Collectors.groupingBy(ni -> ni.getGcInfo().getStartTime() / 1000 / 60, Collectors.summarizingLong(value -> value.getGcInfo().getDuration())));
+                    // By minutes statistics
+                    minStatMap.forEach((min, durationSummary) ->
+                            {
+                                System.out.println("min: " + min + "; Summary duration (ms):" + durationSummary.getSum() + "; Avg duration (ms): " + durationSummary.getSum()/durationSummary.getCount() + "; gc run count (per min):" + durationSummary.getCount());
+                            }
 
-        infoByGcName.forEach((s, iByGcName) ->
-                {
-                    System.out.println(s + ":\n");
-
-                  iByGcName.stream().collect(Collectors.groupingBy(notificationInfo -> notificationInfo.getGcInfo().getDuration(), Collectors.summarizingLong(value -> value.getGcInfo().getDuration())));
-
+                    );
+                    System.out.println("___________________________\n");
                 }
-
         );
-
-        System.out.println("___________________________");
-
-//        printList.stream().collect()
 
     }
 

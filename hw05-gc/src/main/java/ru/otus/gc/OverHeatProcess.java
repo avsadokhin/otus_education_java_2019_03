@@ -6,7 +6,7 @@ import java.util.List;
 
 public class OverHeatProcess implements BrenchmarkProcess {
     List<Object> list = new ArrayList<>();
-    int size = 100000;//9000;
+    int size = 10000;//1000000;;
 
     @Override
     public void run() throws OutOfMemoryError {
@@ -17,7 +17,7 @@ public class OverHeatProcess implements BrenchmarkProcess {
 
 
             try {
-                Thread.sleep(350);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
 
             }
