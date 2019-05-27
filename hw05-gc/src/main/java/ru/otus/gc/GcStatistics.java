@@ -15,6 +15,7 @@ public class GcStatistics {
     private final BrenchmarkProcess process;
     private CopyOnWriteArrayList<GarbageCollectionNotificationInfo> notificationInfoList;
     private boolean isOverLoad = false;
+    long workedTime = 0;
 
     public GcStatistics(BrenchmarkProcess process) {
         this.process = process;
@@ -60,7 +61,8 @@ public class GcStatistics {
             process.run();
         } catch (OutOfMemoryError err) {
             isOverLoad = true;
-            System.out.println("Memory overload. Worked time, sec: " + (System.currentTimeMillis() - startTime) / 1000);
+            workedTime =( System.currentTimeMillis() - startTime);
+            System.out.println("Memory overload. Worked time, sec: " + workedTime/1000);
         }
 
         printNotificationReport();
@@ -72,6 +74,12 @@ public class GcStatistics {
 
         Map<String, List<GarbageCollectionNotificationInfo>> infoByGcName
                 = notificationInfoList.stream().collect(Collectors.groupingBy(GarbageCollectionNotificationInfo::getGcName));
+        LongSummaryStatistics summaryStatistics = notificationInfoList.stream().collect(Collectors.summarizingLong(value -> value.getGcInfo().getDuration()));
+        System.out.println("All Duration (ms): " + summaryStatistics.getSum() + "; Min duration: " + summaryStatistics.getMin() + "; Max duration: " + summaryStatistics.getMax());
+
+        if (workedTime != 0) System.out.println("All duration / Worked Time: " + (float)(summaryStatistics.getSum()/ (float) workedTime));
+
+        System.out.println();
         // By gcName
         infoByGcName.forEach((gcName, nameInfos) -> {
                     System.out.println(gcName + ":\n");
@@ -79,7 +87,7 @@ public class GcStatistics {
                     // By minutes statistics
                     minStatMap.forEach((min, durationSummary) ->
                             {
-                                System.out.println("min: " + min + "; Summary duration (ms):" + durationSummary.getSum() + "; Avg duration (ms): " + durationSummary.getSum()/durationSummary.getCount() + "; gc run count (per min):" + durationSummary.getCount());
+                                System.out.println("min: " + min + "; Summary duration (ms):" + durationSummary.getSum() + "; Avg duration (ms): " + durationSummary.getSum() / durationSummary.getCount() + "; gc run count (per min):" + durationSummary.getCount());
                             }
 
                     );
