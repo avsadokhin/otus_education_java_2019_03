@@ -17,6 +17,7 @@ public class GcStatistics {
     private boolean isOverLoad = false;
     long workedTime = 0;
 
+
     public GcStatistics(BrenchmarkProcess process) {
         this.process = process;
         this.notificationInfoList = new CopyOnWriteArrayList<>();
@@ -79,7 +80,7 @@ public class GcStatistics {
 
         if (workedTime != 0) System.out.println("All duration / Worked Time: " + (float)(summaryStatistics.getSum()/ (float) workedTime));
 
-        System.out.println();
+        System.out.println("Objects count: " + process.getCnt());
         // By gcName
         infoByGcName.forEach((gcName, nameInfos) -> {
                     System.out.println(gcName + ":\n");
