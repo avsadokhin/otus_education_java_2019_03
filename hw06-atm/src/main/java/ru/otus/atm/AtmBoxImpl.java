@@ -15,32 +15,33 @@ public class AtmBoxImpl implements AtmBox {
 
     @Override
     public void showBalance() {
-        System.out.println("Balance: " + banknoteStorage.getBalance());
-    }
-    @Override
-    public void showCellsBalanceService() {
-        banknoteStorage.getCells().forEach((banknote, integer) -> System.out.println("cell " + banknote.getValue() + ": " + integer));
+        System.out.println("Balance: " + banknoteStorage.getStorageBalance());
     }
 
     @Override
-    public void fillUpStorageService(BanknoteStorage banknoteStorage) {
+    public void showCellsBalanceService() {
+        banknoteStorage.getCellMap().forEach((banknote, cell) -> System.out.println("cell " + cell.getBanknote().getValue() + ": " + cell.getCount()));
+    }
+
+    @Override
+    public void mountStorageService(BanknoteStorage banknoteStorage) {
         this.banknoteStorage = banknoteStorage;
     }
 
     @Override
-    public Map<Banknote, Integer> getBanknotes(Integer amount) throws Exception {
+    public Map<Banknote, Integer> getBanknotes(int amount) throws Exception {
         Map<Banknote, Integer> amountCrate = new HashMap<>();
 
-        if (amount <= 0 || banknoteStorage.getBalance() < amount)
-            throw new Exception("Invalid requested operation! Сan not give the specified amount");
+        if (amount <= 0 || banknoteStorage.getStorageBalance() < amount)
+            throw new Exception("Invalid requested operation! Сan not give the specified amount: " + amount);
 
         int remainingAmount = amount;
 
-        for (Banknote banknote : banknoteStorage.banknoteSortedList) {
-            int cellCount = banknoteStorage.getCellCount(banknote);
+        for (Banknote banknote : banknoteStorage.getBanknoteSortedList()) {
+            int banknotesInStorage = banknoteStorage.getCell(banknote).getCount();
             int banknoteCount;
             if (remainingAmount < 0) banknoteCount = 0;
-            else banknoteCount = Math.min( remainingAmount / banknote.getValue(), cellCount);
+            else banknoteCount = Math.min(remainingAmount / banknote.getValue(), banknotesInStorage);
 
             remainingAmount = remainingAmount - banknoteCount * banknote.getValue();
 
@@ -52,14 +53,13 @@ public class AtmBoxImpl implements AtmBox {
 
         if (remainingAmount != 0)
             throw new Exception("Invalid requested amount operation! No banknotes nominal available");
+        banknoteStorage.release(amountCrate);
 
-
-        amountCrate.forEach((banknote, count) -> banknoteStorage.extract(banknote, count));
         return amountCrate;
     }
 
     @Override
-    public void receiveBanknotes(Map<Banknote, Integer> banknotes) {
-        banknotes.forEach((banknote, count) -> banknoteStorage.store(banknote, count));
+    public void putBanknotes(Map<Banknote, Integer> banknotes) {
+        banknoteStorage.store(banknotes);
     }
 }
