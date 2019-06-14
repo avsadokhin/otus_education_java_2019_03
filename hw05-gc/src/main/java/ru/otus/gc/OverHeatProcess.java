@@ -26,4 +26,8 @@ public class OverHeatProcess implements BrenchmarkProcess {
         }
     }
 
+    @Override
+    public int getCnt() {
+        return list.size();
+    }
 }
