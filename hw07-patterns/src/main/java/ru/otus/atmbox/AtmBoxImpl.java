@@ -1,4 +1,7 @@
-package ru.otus.atm;
+package ru.otus.atmbox;
+
+import ru.otus.banknote.Banknote;
+import ru.otus.banknote.BanknoteStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +9,8 @@ import java.util.Map;
 public class AtmBoxImpl implements AtmBoxObserver {
     private String atmCode;
     private BanknoteStorage banknoteStorage = new BanknoteStorage();
-    AtmBoxOriginator originator = new AtmBoxOriginator();
-    AtmBoxCaretaker caretaker = new AtmBoxCaretaker();
+    private AtmBoxOriginator originator = new AtmBoxOriginator();
+    private AtmBoxCaretaker caretaker = new AtmBoxCaretaker();
 
     public AtmBoxImpl(String atmCode) {
         this.atmCode = atmCode;
@@ -79,6 +82,7 @@ public class AtmBoxImpl implements AtmBoxObserver {
     @Override
     public void resetState() {
         originator.restoreState(caretaker.getMemento());
-        banknoteStorage = originator.getStorage();
+        BanknoteStorage originBanknoteStorage= originator.getStorage();
+        originBanknoteStorage.getCellMap().forEach((banknote, cell) -> banknoteStorage.getCell(banknote).setCount(cell.getCount()));
     }
 }

@@ -1,4 +1,4 @@
-package ru.otus.atm;
+package ru.otus.banknote;
 
 public enum Banknote {
     TEN(10),

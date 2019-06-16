@@ -1,4 +1,6 @@
-package ru.otus.atm;
+package ru.otus.department;
+
+import ru.otus.atmbox.AtmBoxObserver;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +18,7 @@ public class DepartmentAtm {
     }
 
     public void resetAllAtmState() {
-        atmBoxObserverSet.forEach(atmBoxObserver -> atmBoxObserver.resetState());
+        atmBoxObserverSet.forEach(AtmBoxObserver::resetState);
     }
 
 

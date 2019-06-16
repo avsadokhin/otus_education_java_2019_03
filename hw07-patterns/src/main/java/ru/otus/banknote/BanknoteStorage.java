@@ -1,7 +1,6 @@
-package ru.otus.atm;
+package ru.otus.banknote;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BanknoteStorage {
     private Map<Banknote, BanknoteCell> cellMap = new HashMap<>();
@@ -47,8 +46,8 @@ public class BanknoteStorage {
     }
 
 
-    public void putInCell(BanknoteCell cell, int count) {
-        cell.putBanknote(count);
+    private void putInCell(BanknoteCell cell, int count) {
+        cell.increaseBanknoteCount(count);
     }
 
     public void release(Map<Banknote, Integer> banknotes) {
@@ -56,8 +55,8 @@ public class BanknoteStorage {
 
     }
 
-    public void getFromCell(BanknoteCell cell, int count) {
-        cell.getBanknote(count);
+    private void getFromCell(BanknoteCell cell, int count) {
+        cell.decreaseBanknoteCount(count);
     }
 
 
@@ -66,7 +65,7 @@ public class BanknoteStorage {
     }
 
     public long getStorageBalance() {
-        return cellMap.entrySet().stream().map(e -> e.getKey().getValue() * e.getValue().getCount()).collect(Collectors.summingLong(Integer::longValue));
+        return cellMap.entrySet().stream().map(e -> e.getKey().getValue() * e.getValue().getCount()).mapToLong(Integer::longValue).sum();
 
 
     }

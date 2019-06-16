@@ -1,11 +1,17 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.atm.*;
+import ru.otus.atmbox.*;
+import ru.otus.department.DepartmentAtm;
+import ru.otus.banknote.Banknote;
+import ru.otus.banknote.BanknoteCell;
+import ru.otus.banknote.BanknoteStorage;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TestAtm {
@@ -101,7 +107,7 @@ public class TestAtm {
 
 
     @Test
-    public void departmentAtm() {
+    public void departmentAtm1_2() {
 
         DepartmentAtm departmentAtm = new DepartmentAtm();
         departmentAtm.registerAtmObserver(atm1);
@@ -109,10 +115,44 @@ public class TestAtm {
         System.out.println("____Department Atm processing____");
         departmentAtm.printAllAtmBalance();
         departmentAtm.resetAllAtmState();
+        assertEquals(atm1.getBalance(), 11000);
+        assertEquals(atm2.getBalance(), 12000);
         departmentAtm.printAllAtmBalance();
         System.out.println("_________End processing__________");
 
 
+    }
+
+    @Test
+    public void departmentAtm3() throws Exception {
+        AtmBoxImpl atm3 = new AtmBoxImpl("AlfaBank_3");
+        Set<BanknoteCell> cells2 = new HashSet<>();
+
+        cells2.add(new BanknoteCell(Banknote.THOUSAND, 10));
+        BanknoteStorage banknoteStorage = new BanknoteStorage(cells2);
+        atm3.mountStorageService(banknoteStorage);
+
+        DepartmentAtm departmentAtm = new DepartmentAtm();
+        departmentAtm.registerAtmObserver(atm3);
+        System.out.println("____Department Atm processing____");
+        departmentAtm.printAllAtmBalance();
+
+        atm3.getBanknotes(2000);
+        departmentAtm.printAllAtmBalance();
+        assertEquals(atm3.getBalance(), 8000);
+
+        departmentAtm.resetAllAtmState();
+        departmentAtm.printAllAtmBalance();
+        assertEquals(atm3.getBalance(), 10000);
+
+        atm3.getBanknotes(2000);
+        departmentAtm.printAllAtmBalance();
+        assertEquals(atm3.getBalance(), 8000);
+
+        departmentAtm.resetAllAtmState();
+        departmentAtm.printAllAtmBalance();
+        assertEquals(atm3.getBalance(), 10000);
+        System.out.println("_________End processing__________");
     }
 
 }

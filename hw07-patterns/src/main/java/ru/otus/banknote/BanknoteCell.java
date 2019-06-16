@@ -1,4 +1,4 @@
-package ru.otus.atm;
+package ru.otus.banknote;
 
 public class BanknoteCell {
     private Banknote banknote;
@@ -23,12 +23,15 @@ public class BanknoteCell {
         return count;
     }
 
-    public void putBanknote(int putCnt){
+    void increaseBanknoteCount(int putCnt){
         count= count + putCnt;
     }
-    public void getBanknote(int getCnt){
+    void decreaseBanknoteCount(int getCnt){
         count= count - getCnt;
     }
 
+    public void setCount(int count)  {
+        this.count = count;
+    }  
 
 }

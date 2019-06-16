@@ -1,13 +1,13 @@
-package ru.otus.atm;
+package ru.otus.atmbox;
 
 public class AtmBoxCaretaker {
     private AtmBoxMemento memento;
 
-    public AtmBoxMemento getMemento() {
+     AtmBoxMemento getMemento() {
         return memento;
     }
 
-    public void setMemento(AtmBoxMemento memento) {
+     void setMemento(AtmBoxMemento memento) {
         this.memento = memento;
     }
 }

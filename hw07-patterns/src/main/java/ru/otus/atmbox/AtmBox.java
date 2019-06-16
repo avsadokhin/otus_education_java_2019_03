@@ -1,4 +1,7 @@
-package ru.otus.atm;
+package ru.otus.atmbox;
+
+import ru.otus.banknote.Banknote;
+import ru.otus.banknote.BanknoteStorage;
 
 import java.util.Map;
 
