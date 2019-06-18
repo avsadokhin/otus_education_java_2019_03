@@ -27,6 +27,7 @@
         <module>hw04-byteCodes</module>
         <module>hw06-atm</module>
         <module>hw07-patterns</module>
+        <module>hw08-json</module>
     </modules>
 
     <properties>
