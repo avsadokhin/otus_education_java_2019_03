@@ -18,10 +18,10 @@ public class JsonComplexTest {
     }
 
     @Test
-    public void testClassTest(){
+    public void testClassTest() {
         TestClass testClass = new TestClass();
         String jsonShouldBe = gson.toJson(testClass);
-        String jsonResult =  serializer.toJson(testClass);
+        String jsonResult = serializer.toJson(testClass);
 
         Assertions.assertEquals(jsonShouldBe, jsonResult);
     }

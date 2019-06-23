@@ -16,6 +16,11 @@ public class TestClass extends TestMain {
     private Set<String> set = new HashSet<>();
     private Map<Integer, String> map = new HashMap<>();
 
+    private final static String aa = "aaa";
+    private String ns;
+    private int zzz = 5;
+
+
     public TestClass() {
         super("Super");
         set.add("Set1");

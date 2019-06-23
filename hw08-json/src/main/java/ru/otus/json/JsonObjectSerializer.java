@@ -27,7 +27,7 @@ public class JsonObjectSerializer {
     );
 
     public String toJson(Object src) {
-        return src == null ? Json.createObjectBuilder().build().toString() : this.toJsonObject(src, src.getClass()).build().toString();
+        return src == null ? JsonObject.NULL.toString() : this.toJsonValue(src).toString();
     }
 
     private JsonObjectBuilder toJsonObject(Object src, Class<?> clazz) {
@@ -75,12 +75,12 @@ public class JsonObjectSerializer {
 
             Field[] fields = objClass.getDeclaredFields();
             for (Field field : fields) {
-                if (Modifier.isTransient(field.getModifiers())) {
+                if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())) {
                     continue;
                 }
                 final Object fieldValue = ReflectionHelper.getFieldValue(src, field);
-
-                jsonObjectBuilder.add(field.getName(), toJsonValue(fieldValue));
+                if (fieldValue != null)
+                    jsonObjectBuilder.add(field.getName(), toJsonValue(fieldValue));
             }
             objClass = objClass.getSuperclass();
 
@@ -89,6 +89,7 @@ public class JsonObjectSerializer {
     }
 
     private JsonValue toJsonValue(Object src) {
+
         if (src instanceof Number)
             return NumberToJsonValue((Number) src);
         else if (src instanceof Boolean)
