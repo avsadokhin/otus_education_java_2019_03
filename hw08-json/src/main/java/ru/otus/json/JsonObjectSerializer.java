@@ -30,21 +30,6 @@ public class JsonObjectSerializer {
         return src == null ? JsonObject.NULL.toString() : this.toJsonValue(src).toString();
     }
 
-    private JsonObjectBuilder toJsonObject(Object src, Class<?> clazz) {
-        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-        if (commonTypes.contains(clazz.getSimpleName().toUpperCase()))
-            return jsonObjectBuilder.add("singleElm", toJsonValue(src));
-        else if (src.getClass().isArray())
-            return jsonObjectBuilder.add("singleElm", ArrayToJsonBuilder(src));
-        else if (src instanceof Collection)
-            return jsonObjectBuilder.add("singleElm", CollectionToJsonBuilder(src));
-        else if (src instanceof Map)
-            return jsonObjectBuilder.add("singleElm", MapToJsonBuilder(src));
-        else
-            return complexObjectToJson(src, clazz);
-
-    }
-
     private JsonObjectBuilder MapToJsonBuilder(Object src) {
         JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
         ((Map) src).forEach((key, val) -> jsonObjectBuilder.add(key.toString(), toJsonValue(val)));
