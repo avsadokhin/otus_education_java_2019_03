@@ -1,16 +1,21 @@
 package ru.otus.dao;
 
+import ru.otus.annotation.Column;
 import ru.otus.annotation.Id;
 import ru.otus.annotation.Size;
+import ru.otus.entity.DbType;
 
 public class User {
-    @Id(isPK = true, isAutoIncrement = true)
+    @Column(type = DbType.BIGINT)
+    @Id(isAutoIncrement = true)
     @Size(min = 20)
     private long id;
 
-    @Size(min = 255)
+    @Column(type = DbType.VARCHAR)
+    //@Size(min = 0)
     private String name;
 
+    @Column(type = DbType.VARCHAR)
     @Size(min = 3)
     private int age;
 

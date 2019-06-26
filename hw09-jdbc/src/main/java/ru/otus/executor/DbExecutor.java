@@ -7,9 +7,9 @@ import java.util.function.Function;
 
 public interface DbExecutor<T> {
 
-    void createTable(T t) throws SQLException;
+    void createTable(String query) throws SQLException;
 
-    void deleteTable(T t) throws SQLException;
+    void deleteTable(String query) throws SQLException;
 
     long insert(String query, List<String> params) throws SQLException;
 

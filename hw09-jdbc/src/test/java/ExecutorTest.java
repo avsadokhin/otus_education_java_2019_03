@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import ru.otus.dao.User;
-import ru.otus.dbservice.DataSourceH2;
-import ru.otus.dbservice.DbService;
-import ru.otus.dbservice.DbServiceImpl;
+import ru.otus.dbservice.*;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -11,14 +10,17 @@ public class ExecutorTest {
     private DataSource dataSource;
 
     @BeforeAll
-    private void init() throws SQLException {
+    public static void init() throws SQLException {
         User user = new User("Mihail", 23);
 
         DataSource dataSource = new DataSourceH2();
-        DbService<User> dbService = new DbServiceImpl<>(dataSource);
-        dbService.create(user);
+        DbService<User> dbService = new DbServiceImpl<>(dataSource, User.class);
+        dbService.createMeta();
+        //dbService.create(user);
+    }
 
-
+    @Test
+    void run(){
 
     }
 }
