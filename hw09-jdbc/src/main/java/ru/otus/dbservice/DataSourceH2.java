@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * created on 03.02.19.
  */
 public class DataSourceH2 implements DataSource {
-    private static final String URL = "jdbc:h2:mem:hw_base;DB_CLOSE_DELAY=-1";
+    private static final String URL = "jdbc:h2:tcp://localhost/~/test";
     private static final String USERNAME = "sa";
     private static final String PASSWORD = "";
 

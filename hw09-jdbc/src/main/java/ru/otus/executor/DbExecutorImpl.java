@@ -1,10 +1,9 @@
 package ru.otus.executor;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.lang.reflect.Field;
+import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class DbExecutorImpl<T> implements DbExecutor<T> {
@@ -14,22 +13,38 @@ public class DbExecutorImpl<T> implements DbExecutor<T> {
     public DbExecutorImpl(Connection connection) {
         this.connection = connection;
     }
+
     @Override
     public void createTable(String query) throws SQLException {
         try (final Statement statement = connection.createStatement()) {
-            statement.executeQuery(query);
+            statement.execute(query);
         }
     }
 
     @Override
     public void deleteTable(String query) throws SQLException {
-
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.execute(query);
+        }
     }
 
 
     @Override
-    public long insert(String query, List<String> params) throws SQLException {
-        return 0;
+    public long insert(String query, List<Object> params) throws SQLException {
+        try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            int i = 1;
+            for (Object  p: params) {
+                statement.setObject(i++, p);
+                System.out.println(i +" :" +p);
+            }
+            statement.executeUpdate();
+            connection.commit();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else return 0;
+            }
+        }
     }
 
     @Override

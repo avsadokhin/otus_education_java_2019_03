@@ -12,7 +12,7 @@ public class User {
     private long id;
 
     @Column(type = DbType.VARCHAR)
-    //@Size(min = 0)
+    @Size(min = 34)
     private String name;
 
     @Column(type = DbType.VARCHAR)

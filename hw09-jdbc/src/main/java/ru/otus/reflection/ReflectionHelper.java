@@ -29,7 +29,7 @@ public final class ReflectionHelper {
         return null;
     }
 
-    static Object getFieldValue(Object object, String name) {
+    public static Object getFieldValue(Object object, String name) {
         Field field = null;
         boolean isAccessible = true;
         try {

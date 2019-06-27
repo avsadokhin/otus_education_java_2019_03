@@ -6,8 +6,11 @@ import ru.otus.executor.DbExecutor;
 import ru.otus.executor.DbExecutorImpl;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class DbServiceImpl<T> implements DbService<T> {
 
@@ -28,20 +31,37 @@ public class DbServiceImpl<T> implements DbService<T> {
             executor = new DbExecutorImpl<>(dataSource.getConnection());
             String query = entity.getMetaCreateStatment();
             System.out.println(query);
-           // executor.createTable("");
+            executor.createTable(query);
 
         }
     }
 
     @Override
     public void deleteMeta() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            executor = new DbExecutorImpl<>(dataSource.getConnection());
+            String query = entity.getMetaDeleteStatment();
+            System.out.println(query);
+            executor.createTable(query);
 
+        }
     }
-
 
 
     @Override
     public void create(T t) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            executor = new DbExecutorImpl<>(dataSource.getConnection());
+            String query = entity.insertPreparedStatement();
+
+            System.out.println(query);
+            List<Object> fieldValueList = entity.getInsertFieldListValue(t);
+            List<String> stringList = entity.getFieldNameList();
+            stringList.forEach(s -> System.out.println(s));
+            long id = executor.insert(query, fieldValueList);
+            System.out.println(id);
+        }
+
 
     }
 

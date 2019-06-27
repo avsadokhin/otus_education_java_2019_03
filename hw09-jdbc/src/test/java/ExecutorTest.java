@@ -11,12 +11,17 @@ public class ExecutorTest {
 
     @BeforeAll
     public static void init() throws SQLException {
-        User user = new User("Mihail", 23);
+        User user = new User("sdsd", 23);
 
         DataSource dataSource = new DataSourceH2();
+
         DbService<User> dbService = new DbServiceImpl<>(dataSource, User.class);
+        dbService.deleteMeta();
+
         dbService.createMeta();
-        //dbService.create(user);
+
+        dbService.create(user);
+
     }
 
     @Test
