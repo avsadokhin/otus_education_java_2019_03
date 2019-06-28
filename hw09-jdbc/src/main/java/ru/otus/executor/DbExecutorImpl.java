@@ -1,9 +1,7 @@
 package ru.otus.executor;
 
-import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 public class DbExecutorImpl<T> implements DbExecutor<T> {
@@ -33,12 +31,10 @@ public class DbExecutorImpl<T> implements DbExecutor<T> {
     public long insert(String query, List<Object> params) throws SQLException {
         try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             int i = 1;
-            for (Object  p: params) {
+            for (Object p : params) {
                 statement.setObject(i++, p);
-                System.out.println(i +" :" +p);
             }
             statement.executeUpdate();
-            connection.commit();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
@@ -48,12 +44,33 @@ public class DbExecutorImpl<T> implements DbExecutor<T> {
     }
 
     @Override
-    public void update(String query, List<String> params, long id) throws SQLException {
+    public int update(String query, List<Object> params, long id) throws SQLException {
+        try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            int i = 1;
+            for (Object p : params) {
+                statement.setObject(i++, p);
+            }
+            statement.setObject(i++, id);
+            statement.executeUpdate();
 
+            return  statement.getUpdateCount();
+
+
+
+        }
     }
 
     @Override
-    public <T1> T1 select(String query, Function<ResultSet, T1> function, long id) throws SQLException {
-        return null;
+    public  T select(String query, Function<ResultSet, T> function, long id) throws SQLException {
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return function.apply(resultSet);
+            }
+
+        }
+
+
     }
 }
+

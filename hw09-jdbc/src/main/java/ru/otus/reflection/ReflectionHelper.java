@@ -12,7 +12,7 @@ public final class ReflectionHelper {
     private ReflectionHelper() {
     }
 
-    static <T> T instantiate(Class<T> type, Object... args) {
+    public static <T> T instantiate(Class<T> type, Object... args) {
         try {
             if (args.length == 0) {
                 final Constructor<T> constructor = type.getDeclaredConstructor();
@@ -63,6 +63,7 @@ public final class ReflectionHelper {
         return null;
     }
 
+
     static void setFieldValue(Object object, String name, Object value) {
         Field field = null;
         boolean isAccessible = true;
@@ -72,6 +73,21 @@ public final class ReflectionHelper {
             field.setAccessible(true);
             field.set(object, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        } finally {
+            if (field != null && !isAccessible) {
+                field.setAccessible(false);
+            }
+        }
+    }
+
+    public static void setFieldValue(Object object, Field field, Object value) {
+        boolean isAccessible = true;
+        try {
+            isAccessible = field.canAccess(object);
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         } finally {
             if (field != null && !isAccessible) {

@@ -5,8 +5,6 @@ import ru.otus.annotation.Id;
 import ru.otus.annotation.Size;
 import ru.otus.reflection.ReflectionHelper;
 
-import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +32,8 @@ public class Entity<T> {
     public Entity(Class<? extends T> clazz) {
         this.clazz = clazz;
         this.tableName = clazz.getSimpleName().toUpperCase();
+
+        checkEntity();
         this.fieldList = getFieldAnnotadedList();
     }
 
@@ -45,11 +45,14 @@ public class Entity<T> {
 
     }
 
-    public List<Field> getFieldAnnotadedList() {
+    private List<Field> getFieldAnnotadedList() {
         List<Field> list = ReflectionHelper.getObjectFieldsList(clazz);
         return list.stream().filter(field -> field.isAnnotationPresent(Column.class)).collect(Collectors.toList());
     }
 
+    public Optional<Field> getFieldId(){
+        return fieldList.stream().filter(field -> field.isAnnotationPresent(Id.class)).findFirst();
+    }
     public List<String> getFieldNameList() {
         return fieldList.stream().map(Field::getName).collect(Collectors.toList());
     }
@@ -58,9 +61,6 @@ public class Entity<T> {
         return fieldList.stream().filter(field -> !fieldsToIgnore.contains(field)).map(Field::getName).collect(Collectors.toList());
     }
 
-    public List<Object> getFieldListValue(T t) {
-        return fieldList.stream().map(field -> ReflectionHelper.getFieldValue(t, field.getName())).collect(Collectors.toList());
-    }
 
     public List<Object> getInsertFieldListValue(T t) {
         return fieldList.stream().filter(field -> !(isColumnId(field) && isColumnAutoIncrement(field))).map(field -> ReflectionHelper.getFieldValue(t, field.getName())).collect(Collectors.toList());
@@ -68,15 +68,23 @@ public class Entity<T> {
     }
 
 
+    public List<Object> getUpdateFieldListValue(T t) {
+        return fieldList.stream().filter(field -> !(isColumnId(field))).map(field -> ReflectionHelper.getFieldValue(t, field.getName())).collect(Collectors.toList());
+    }
+
     public String getDelimitedFieldNames(List<Field> fieldsToIgnore) {
         return String.join(",", getFieldNameList(fieldsToIgnore));
 
     }
 
+    public String getDelimitedFieldNames() {
+        return String.join(",", getFieldNameList());
+
+    }
 
     private String getTableDelimitedColumnString() {
 
-        return String.join(", ", fieldList.stream().map(f -> getColumnDefinitionString(f)).collect(Collectors.toSet()));
+        return String.join(", ", fieldList.stream().map(this::getColumnDefinitionString).collect(Collectors.toSet()));
 
     }
 
@@ -114,14 +122,13 @@ public class Entity<T> {
 
     private boolean isColumnAutoIncrement(Field field) {
         if (field.isAnnotationPresent(Id.class)) {
-            boolean isAutoIncrement = field.getAnnotation(Id.class).isAutoIncrement();
-            return isAutoIncrement;
+            return field.getAnnotation(Id.class).isAutoIncrement();
         } else return false;
     }
 
 
     private String getDelimitedFieldValues(List<Field> ignoreFields) {
-        return String.join(",", Stream.iterate("?", n -> n).limit(getFieldNameList(ignoreFields).size()).collect(Collectors.toList()));
+        return Stream.iterate("?", n -> n).limit(getFieldNameList(ignoreFields).size()).collect(Collectors.joining(","));
     }
 
     public String getMetaCreateStatment() {
@@ -134,13 +141,30 @@ public class Entity<T> {
 
     }
 
-    public String insertPreparedStatement() {
+    public String getInsertPreparedStatement() {
         List<Field> ignoreFields;
         ignoreFields = fieldList.stream().filter(field -> isColumnId(field) && isColumnAutoIncrement(field)).collect(Collectors.toList());
         return String.format("INSERT INTO %s (%s) VALUES (%s)",
                 getTableName(),
                 getDelimitedFieldNames(ignoreFields),
                 getDelimitedFieldValues(ignoreFields));
+    }
+
+    public String getUpdatePreparedStatement() {
+        List<Field> ignoreFields;
+        ignoreFields = fieldList.stream().filter(field -> isColumnId(field)).collect(Collectors.toList());
+
+        return String.format("UPDATE %s SET %s WHERE id = ?",
+                getTableName(),
+                String.join(" = ?, ", getFieldNameList(ignoreFields)) + " = ? "
+        );
+
+    }
+
+    public String getSelectByIdPreparedStatement() {
+        return String.format("SELECT %s FROM %s WHERE ID = ?",
+                getDelimitedFieldNames(),
+                getTableName());
     }
 
 

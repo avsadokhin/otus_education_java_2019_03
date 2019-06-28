@@ -9,26 +9,28 @@ public class User {
     @Column(type = DbType.BIGINT)
     @Id(isAutoIncrement = true)
     @Size(min = 20)
-    private long id;
+    private Long id;
 
     @Column(type = DbType.VARCHAR)
     @Size(min = 34)
     private String name;
 
-    @Column(type = DbType.VARCHAR)
+    @Column(type = DbType.INT)
     @Size(min = 3)
     private int age;
 
+    public User() {
+    }
     public User(String name, int age) {
         this.name = name;
         this.age = age;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
