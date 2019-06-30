@@ -9,25 +9,28 @@ public class Account {
     @Column(type = DbType.BIGINT)
     @Id(isAutoIncrement = true)
     @Size(min = 20)
-    private long id;
+    private Long id;
 
     @Column(type = DbType.VARCHAR)
     @Size(min = 255)
     private String type;
 
     @Column(type = DbType.DOUBLE)
-    private Number rest;
+    private Double rest;
 
-    public Account(String type, Number rest) {
+    public Account() {
+    }
+
+    public Account(String type, Double rest) {
         this.type = type;
         this.rest = rest;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,11 +42,11 @@ public class Account {
         this.type = type;
     }
 
-    public Number getRest() {
+    public Double getRest() {
         return rest;
     }
 
-    public void setRest(Number rest) {
+    public void setRest(Double rest) {
         this.rest = rest;
     }
 

@@ -60,6 +60,8 @@ public class DbServiceImpl<T> implements DbService<T> {
             long id = executor.insert(query, fieldValueList);
 
             connection.commit();
+
+            ReflectionHelper.setFieldValue(t, entity.getFieldId(), id);
         }
 
 
@@ -73,8 +75,8 @@ public class DbServiceImpl<T> implements DbService<T> {
 
             List<Object> fieldValueList = entity.getUpdateFieldListValue(t);
 
-            Optional<Field> fieldId = entity.getFieldId();
-            Object valueId = ReflectionHelper.getFieldValue(t, fieldId.get());
+            Field fieldId = entity.getFieldId();
+            Object valueId = ReflectionHelper.getFieldValue(t, fieldId);
 
             long id = valueId != null ? (long) valueId : -1;
             if (id == -1) throw new EntityException("Value for ID column must be set");
@@ -82,7 +84,7 @@ public class DbServiceImpl<T> implements DbService<T> {
             int updatedCnt = executor.update(query, fieldValueList, id);
 
             if (updatedCnt == 0)
-                throw new SQLException("Entity \"" + entity.getTableName() + "\" with id = " + id + " doesn't exists");
+                throw new EntityException("Entity \"" + entity.getTableName() + "\" with id = " + id + " doesn't exists");
 
             connection.commit();
 
@@ -126,7 +128,6 @@ public class DbServiceImpl<T> implements DbService<T> {
 
                 Object resultSetObject;
                 resultSetObject = resultSet.getObject(field.getName());
-
 
                 ReflectionHelper.setFieldValue(resultObject, field, resultSetObject);
             }

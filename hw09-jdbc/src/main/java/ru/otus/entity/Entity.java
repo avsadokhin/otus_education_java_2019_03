@@ -50,9 +50,16 @@ public class Entity<T> {
         return list.stream().filter(field -> field.isAnnotationPresent(Column.class)).collect(Collectors.toList());
     }
 
-    public Optional<Field> getFieldId(){
-        return fieldList.stream().filter(field -> field.isAnnotationPresent(Id.class)).findFirst();
+    public Field getFieldId() {
+        Optional<Field> field = fieldList.stream().filter(f -> f.isAnnotationPresent(Id.class)).findFirst();
+
+        if (!field.isPresent()) {
+            throw new EntityException("No Id field entity found");
+        }
+
+        return field.get();
     }
+
     public List<String> getFieldNameList() {
         return fieldList.stream().map(Field::getName).collect(Collectors.toList());
     }

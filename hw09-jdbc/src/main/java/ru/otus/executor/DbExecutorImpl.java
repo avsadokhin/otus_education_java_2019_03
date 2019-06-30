@@ -53,15 +53,14 @@ public class DbExecutorImpl<T> implements DbExecutor<T> {
             statement.setObject(i++, id);
             statement.executeUpdate();
 
-            return  statement.getUpdateCount();
-
+            return statement.getUpdateCount();
 
 
         }
     }
 
     @Override
-    public  T select(String query, Function<ResultSet, T> function, long id) throws SQLException {
+    public T select(String query, Function<ResultSet, T> function, long id) throws SQLException {
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
