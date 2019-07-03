@@ -1,12 +1,15 @@
-package ru.otus.dao;
+package ru.otus.entity;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "user")
+@TableGenerator(name = "true")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -17,9 +20,11 @@ public class User {
     private int age;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
     private AddressDataSet address;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "phone_id")
     private List<PhoneDataSet> phoneList;
 
     public User() {
@@ -54,6 +59,21 @@ public class User {
         this.age = age;
     }
 
+    public AddressDataSet getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDataSet address) {
+        this.address = address;
+    }
+
+    public List<PhoneDataSet> getPhoneList() {
+        return phoneList;
+    }
+
+    public void setPhoneList(List<PhoneDataSet> phoneList) {
+        this.phoneList = phoneList;
+    }
 
     @Override
     public String toString() {
