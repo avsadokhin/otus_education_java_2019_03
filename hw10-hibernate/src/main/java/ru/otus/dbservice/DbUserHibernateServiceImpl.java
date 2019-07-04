@@ -8,8 +8,10 @@ import org.reflections.Reflections;
 import ru.otus.dao.UserDaoImpl;
 import ru.otus.entity.User;
 
+import javax.naming.OperationNotSupportedException;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.transaction.NotSupportedException;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +43,7 @@ public class DbUserHibernateServiceImpl implements DbService<User, Long> {
 
     @Override
     public void createMeta() {
+        throw new UnsupportedOperationException("Operation not supported due h2 auto creation meta");
 
     }
 

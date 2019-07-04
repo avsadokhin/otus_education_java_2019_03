@@ -32,6 +32,7 @@ public class UserDaoImpl implements EntityDao<User, Long> {
         transaction = session.beginTransaction();
         return session;
     }
+
     public void closeSessionWithTransaction() {
         transaction.commit();
         session.close();
@@ -71,7 +72,7 @@ public class UserDaoImpl implements EntityDao<User, Long> {
 
     @Override
     public User findById(Long id) {
-        User user = (User) getSession().get(User.class, id);
+        User user = getSession().get(User.class, id);
         return user;
     }
 

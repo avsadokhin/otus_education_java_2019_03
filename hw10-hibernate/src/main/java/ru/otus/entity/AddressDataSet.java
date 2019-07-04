@@ -7,12 +7,16 @@ import java.util.Objects;
 @Table(name = "address")
 public class AddressDataSet {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "street")
     private String street;
+
+    public AddressDataSet() {
+
+    }
 
     public AddressDataSet(String street) {
         this.street = street;

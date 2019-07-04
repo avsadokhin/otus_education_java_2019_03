@@ -5,20 +5,20 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "phone")
-public class PhoneDataSet  {
+public class PhoneDataSet {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "number")
     private String number;
 
-    public PhoneDataSet(){
+    public PhoneDataSet() {
     }
 
     public PhoneDataSet(String number) {
-        this.number= number;
+        this.number = number;
     }
 
     public Long getId() {
