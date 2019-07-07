@@ -1,20 +1,28 @@
 package ru.otus.dao;
 
+import org.hibernate.SessionFactory;
+
 import java.io.Serializable;
 import java.util.List;
 
-public interface EntityDao<T, PK extends Serializable> {
-    public PK create(T entity);
+import static org.hibernate.id.PersistentIdentifierGenerator.PK;
 
-    public void update(T entity);
+public interface EntityDao {
+    void initiate(Object param);
 
-    public T findById(PK id);
+    <T extends Serializable> T create(Object entity);
 
-    public List<T> findAll();
+    void update(Object entity);
 
-    public void delete(T entity);
 
-    public void deleteAll();
+    <PK extends Serializable> Object findById(PK id);
+
+
+    List<?> findAll();
+
+    void delete(Object entity);
+
+    void deleteAll();
 
 
 }

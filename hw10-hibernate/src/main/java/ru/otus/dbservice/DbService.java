@@ -1,18 +1,23 @@
 package ru.otus.dbservice;
 
+import ru.otus.dao.EntityDao;
+
 import java.io.Serializable;
 import java.util.List;
 
-public interface DbService<T, PK extends Serializable> {
-    void createMeta ();
-    void deleteMeta ();
-    public PK create(T entity);
-    public void update(T entity);
+public interface DbService {
 
-    public T findById(PK id);
-    public List<T> findAll();
+    <PK extends Serializable> PK create(Object entity);
 
-    public void delete(T entity);
-    public void deleteAll();
+    void update(Object entity);
+
+    <PK extends Serializable> Object findById(PK id);
+
+    List<?> findAll();
+
+    void delete(Object entity);
+
+    void deleteAll();
+
 
 }

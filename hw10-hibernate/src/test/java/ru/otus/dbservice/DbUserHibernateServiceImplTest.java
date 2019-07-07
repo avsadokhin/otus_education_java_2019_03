@@ -2,38 +2,42 @@ package ru.otus.dbservice;
 
 import org.assertj.core.api.Assertions;
 import org.hibernate.cfg.Configuration;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.reflections.Reflections;
+import ru.otus.dao.EntityDao;
+import ru.otus.dao.UserDaoImpl;
 import ru.otus.entity.AddressDataSet;
 import ru.otus.entity.PhoneDataSet;
 import ru.otus.entity.User;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 
 class DbUserHibernateServiceImplTest {
 
-    private DbService<User, Long> dbUserService;
+    private DbService dbUserService;
     private Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
     private User user_init;
 
 
     @BeforeEach
     void init() {
-        dbUserService = new DbUserHibernateServiceImpl(configuration);
+        Set<Class<?>> classEntitySet;
+        classEntitySet = new Reflections("ru.otus.entity").getTypesAnnotatedWith(Entity.class);
+        classEntitySet.forEach(aClass -> configuration.addAnnotatedClass(aClass));
+
+        EntityDao userDao = new UserDaoImpl();
+        dbUserService = new DbHibernateServiceImpl(configuration, userDao);
 
         user_init = new User("Alex", 20);
         user_init.setAddress(new AddressDataSet("Lomonosova 20"));
         user_init.setPhoneList(Arrays.asList(new PhoneDataSet("+79031763647"), new PhoneDataSet("+89031763647")));
 
-    }
-
-    @AfterEach
-    void deleteMeta() {
-        dbUserService.deleteMeta();
     }
 
 
@@ -59,7 +63,7 @@ class DbUserHibernateServiceImplTest {
         user_init.setPhoneList(phoneExpected);
         dbUserService.update(user_init);
 
-        User userNew = dbUserService.findById(user_init.getId());
+        User userNew = (User) dbUserService.findById(user_init.getId());
 
         Assertions.assertThat(userNew.getAddress().getStreet().equals(addressExpected.getStreet()));
         Assertions.assertThat(userNew.getPhoneList()).hasSize(3);
@@ -68,7 +72,7 @@ class DbUserHibernateServiceImplTest {
     @Test
     void findById() {
         dbUserService.create(user_init);
-        User userActual = dbUserService.findById(user_init.getId());
+        User userActual = (User) dbUserService.findById(user_init.getId());
         AddressDataSet addressActual = userActual.getAddress();
         List<PhoneDataSet> phoneActual;
         phoneActual = userActual.getPhoneList();
@@ -80,8 +84,10 @@ class DbUserHibernateServiceImplTest {
 
     @Test
     void delete() {
+        dbUserService.create(user_init);
+
         dbUserService.delete(user_init);
-        List<User> userList = dbUserService.findAll();
+        List<User> userList = (List<User>) dbUserService.findAll();
         Assertions.assertThat(userList).isEmpty();
 
 
