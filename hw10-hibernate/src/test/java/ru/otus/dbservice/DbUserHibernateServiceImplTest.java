@@ -32,8 +32,7 @@ class DbUserHibernateServiceImplTest {
         classEntitySet.forEach(aClass -> configuration.addAnnotatedClass(aClass));
 
         EntityDao userDao = new UserDaoImpl();
-        dbUserService = new DbHibernateServiceImpl(configuration, userDao);
-
+        dbUserService = new DbUserHibernateServiceImpl(configuration, userDao);
         user_init = new User("Alex", 20);
         user_init.setAddress(new AddressDataSet("Lomonosova 20"));
         user_init.setPhoneList(Arrays.asList(new PhoneDataSet("+79031763647"), new PhoneDataSet("+89031763647")));

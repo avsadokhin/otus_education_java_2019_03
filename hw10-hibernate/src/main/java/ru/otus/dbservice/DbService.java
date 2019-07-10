@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DbService {
 
-    <PK extends Serializable> PK create(Object entity);
+    void create(Object entity);
 
     void update(Object entity);
 

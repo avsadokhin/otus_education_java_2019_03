@@ -8,9 +8,9 @@ import java.util.List;
 import static org.hibernate.id.PersistentIdentifierGenerator.PK;
 
 public interface EntityDao {
-    void initiate(Object param);
+    void setSession(Object param);
 
-    <T extends Serializable> T create(Object entity);
+    void create(Object entity);
 
     void update(Object entity);
 
