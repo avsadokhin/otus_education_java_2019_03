@@ -10,19 +10,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserDaoImpl implements EntityDao {
+public class UserDaoHibernateImpl implements EntityDao<User> {
     private Session session;
 
-    public UserDaoImpl() {
-
-    }
-
-    @Override
-    public void setSession(Object Session) {
-        if (Session instanceof Session) {
-            this.session = (Session) Session;
-        }
-
+    public UserDaoHibernateImpl(Session session) {
+        this.session = session;
     }
 
     public Session getSession() {
@@ -42,23 +34,23 @@ public class UserDaoImpl implements EntityDao {
     }
 
     @Override
-    public void create(Object entity) {
+    public void create(User entity) {
         getSession().save(entity);
     }
 
     @Override
-    public void update(Object entity) {
+    public void update(User entity) {
         getSession().update(entity);
     }
 
     @Override
-    public Object findById(Serializable id) {
+    public User findById(Serializable id) {
         User user = getSession().get(User.class, id);
         return user;
     }
 
     @Override
-    public void delete(Object entity) {
+    public void delete(User entity) {
         getSession().delete(entity);
     }
 

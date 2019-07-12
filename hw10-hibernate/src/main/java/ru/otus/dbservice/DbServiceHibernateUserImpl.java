@@ -5,23 +5,20 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import ru.otus.dao.EntityDao;
-import ru.otus.dao.UserDaoImpl;
+import ru.otus.dao.UserDaoHibernateImpl;
 import ru.otus.entity.User;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class DbUserHibernateServiceImpl implements DbService {
+public class DbServiceHibernateUserImpl implements DbService {
 
-    private EntityDao entityDao;
     private final SessionFactory sessionFactory;
 
-    public DbUserHibernateServiceImpl(Configuration configuration, EntityDao entityDao) {
+    public DbServiceHibernateUserImpl(Configuration configuration) {
         this.sessionFactory = configuration.buildSessionFactory();
-        this.entityDao = entityDao;
     }
 
     private void updateSessionWithTransaction(Consumer<Session> function) {
@@ -48,8 +45,9 @@ public class DbUserHibernateServiceImpl implements DbService {
 
     @Override
     public void deleteAll() {
+
         updateSessionWithTransaction(session -> {
-            entityDao.setSession(session);
+            EntityDao entityDao = new UserDaoHibernateImpl(session);
             entityDao.deleteAll();
         });
     }
@@ -58,7 +56,7 @@ public class DbUserHibernateServiceImpl implements DbService {
     @Override
     public void create(Object entity) {
         updateSessionWithTransaction(session -> {
-                    entityDao.setSession(session);
+                    EntityDao entityDao = new UserDaoHibernateImpl(session);
                     entityDao.create(entity);
                 }
         );
@@ -68,7 +66,7 @@ public class DbUserHibernateServiceImpl implements DbService {
     @Override
     public void update(Object entity) {
         updateSessionWithTransaction(session -> {
-            entityDao.setSession(session);
+            EntityDao entityDao = new UserDaoHibernateImpl(session);
             entityDao.update(entity);
         });
 
@@ -78,7 +76,7 @@ public class DbUserHibernateServiceImpl implements DbService {
     public Object findById(Serializable id) {
         User res;
         res = querySessionWithTransaction(session -> {
-            entityDao.setSession(session);
+            EntityDao entityDao = new UserDaoHibernateImpl(session);
             return (User) entityDao.findById(id);
         });
 
@@ -89,7 +87,7 @@ public class DbUserHibernateServiceImpl implements DbService {
     public List<User> findAll() {
         List<?> userList;
         userList = querySessionWithTransaction(session -> {
-            entityDao.setSession(session);
+            EntityDao entityDao = new UserDaoHibernateImpl(session);
             return entityDao.findAll();
         });
         return (List<User>) userList;
@@ -98,7 +96,7 @@ public class DbUserHibernateServiceImpl implements DbService {
     @Override
     public void delete(Object entity) {
         updateSessionWithTransaction(session -> {
-            entityDao.setSession(session);
+            EntityDao entityDao = new UserDaoHibernateImpl(session);
             entityDao.delete(entity);
         });
 

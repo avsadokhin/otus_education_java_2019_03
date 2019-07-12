@@ -1,12 +1,10 @@
-package ru.otus.dbservice;
-
 import org.assertj.core.api.Assertions;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
-import ru.otus.dao.EntityDao;
-import ru.otus.dao.UserDaoImpl;
+import ru.otus.dbservice.DbService;
+import ru.otus.dbservice.DbServiceHibernateUserImpl;
 import ru.otus.entity.AddressDataSet;
 import ru.otus.entity.PhoneDataSet;
 import ru.otus.entity.User;
@@ -18,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 
-class DbUserHibernateServiceImplTest {
+class DbServiceHibernateUserImplTest {
 
     private DbService dbUserService;
     private Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
@@ -31,8 +29,8 @@ class DbUserHibernateServiceImplTest {
         classEntitySet = new Reflections("ru.otus.entity").getTypesAnnotatedWith(Entity.class);
         classEntitySet.forEach(aClass -> configuration.addAnnotatedClass(aClass));
 
-        EntityDao userDao = new UserDaoImpl();
-        dbUserService = new DbUserHibernateServiceImpl(configuration, userDao);
+
+        dbUserService = new DbServiceHibernateUserImpl(configuration);
         user_init = new User("Alex", 20);
         user_init.setAddress(new AddressDataSet("Lomonosova 20"));
         user_init.setPhoneList(Arrays.asList(new PhoneDataSet("+79031763647"), new PhoneDataSet("+89031763647")));
