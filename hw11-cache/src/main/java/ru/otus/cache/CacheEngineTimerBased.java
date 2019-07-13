@@ -47,6 +47,7 @@ public class CacheEngineTimerBased<K, V> implements CacheEngine<K, V> {
 
     }
 
+
     @Override
     public void put(K key, V value) {
         CacheElement<K, V> element = new CacheElement<>(key, value);
@@ -101,5 +102,15 @@ public class CacheEngineTimerBased<K, V> implements CacheEngine<K, V> {
                 }
             }
         };
+    }
+
+    @Override
+    public V getAndPutNotExisted(K key, Function<K, V> valueFunction) {
+        V value = null;
+        if ((value = get(key)) == null) {
+            value = valueFunction.apply(key);
+            if (value != null) put(key, value);
+        }
+        return value;
     }
 }

@@ -87,15 +87,17 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
         return age == user.age &&
-                Objects.equals(id, user.id) &&
-                Objects.equals(name, user.name);
+                id.equals(user.id) &&
+                name.equals(user.name) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(phoneList, user.phoneList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age);
+        return Objects.hash(id, name, age, address, phoneList);
     }
 }
