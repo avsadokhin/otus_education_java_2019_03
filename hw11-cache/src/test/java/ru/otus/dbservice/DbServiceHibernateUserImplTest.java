@@ -1,3 +1,5 @@
+package ru.otus.dbservice;
+
 import org.assertj.core.api.Assertions;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.BeforeEach;
