@@ -29,8 +29,11 @@ public class CacheEngineTimerBased<K, V> implements CacheEngine<K, V> {
     @Override
     public V get(K key) {
         SoftReference<CacheElement<K, V>> elementSoftReference = softReferenceMap.get(key);
-        CacheElement<K, V> element = elementSoftReference.get();
-        if (element != null) {
+        CacheElement<K, V> element = null;
+
+        if (elementSoftReference != null && (elementSoftReference.get() != null)) {
+            element = elementSoftReference.get();
+
             element.setAccessed();
             hitCount++;
         } else {
@@ -90,7 +93,7 @@ public class CacheEngineTimerBased<K, V> implements CacheEngine<K, V> {
                 CacheElement<K, V> element = softReferenceMap.get(key).get();
 
                 if (softReferenceElement == null ||
-                        ( element == null || (timeFunction.apply(element) < System.currentTimeMillis()))
+                        (element == null || (timeFunction.apply(element) < System.currentTimeMillis()))
                 ) {
                     softReferenceMap.remove(key);
 
