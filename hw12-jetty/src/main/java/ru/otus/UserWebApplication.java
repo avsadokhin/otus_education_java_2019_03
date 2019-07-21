@@ -1,11 +1,5 @@
 package ru.otus;
 
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.hibernate.cfg.Configuration;
 import org.reflections.Reflections;
 import ru.otus.dbservice.DbService;
@@ -13,26 +7,25 @@ import ru.otus.dbservice.DbServiceHibernateUserImpl;
 import ru.otus.entity.AddressDataSet;
 import ru.otus.entity.PhoneDataSet;
 import ru.otus.entity.User;
-import ru.otus.web.WebServer;
+import ru.otus.web.JettyWebServer;
 
 import javax.persistence.Entity;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Set;
 
-public class MainApplication {
+public class UserWebApplication {
     private final static int PORT = 8080;
 
     public static void main(String[] args)  throws Exception{
-        new MainApplication().start();
+        new UserWebApplication().start();
     }
     private void start() throws Exception {
-        initDatabase();
-        WebServer jettyServer = new WebServer(PORT);
+      //  prepareTestDataDb();
+        JettyWebServer jettyServer = new JettyWebServer(PORT);
         jettyServer.startWeb();
     }
 
-    private void initDatabase() {
+  /*  private void prepareTestDataDb() {
         final DbService dbUserService;
         final Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
         final User user;
@@ -47,6 +40,7 @@ public class MainApplication {
         user.setPhoneList(Arrays.asList(new PhoneDataSet("+79031763647"), new PhoneDataSet("+89031763647")));
 
         dbUserService.create(user);
-    }
+
+    }*/
 
 }
