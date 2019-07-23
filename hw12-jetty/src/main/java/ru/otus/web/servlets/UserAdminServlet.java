@@ -4,18 +4,19 @@ import ru.otus.dbservice.DbService;
 import ru.otus.entity.User;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import ru.otus.web.Cookie.CookieControl;
 import ru.otus.web.TemplateProcessor;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class UserAdminServlet extends HttpServlet {
-    public static String pathSpec = "/userAdmin";
     private final TemplateProcessor templateProcessor;
     private DbService<User> dbUserService;
 
@@ -29,25 +30,15 @@ public class UserAdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> dataMap = new HashMap<>();
 
-        String userName = Arrays.stream(req.getCookies())
-                .filter(cookie -> cookie
-                        .getName()
-                        .equals("username"))
-                .findFirst()
-                .get()
-                .getValue();
-        req.getServletContext().setAttribute("username", userName);
-        req.getServletContext().setAttribute("date", LocalDateTime.now().toString());
-        dataMap.put("username", userName);
+        Map<String, Optional<Cookie>> cookieMap = new HashMap<>();
+        cookieMap = CookieControl.getCookieMap(req);
+
+
+        cookieMap.get("username").ifPresent(cookie -> dataMap.put("username", cookie.getName()));
         dataMap.put("date", LocalDateTime.now().toString());
 
         String userId;
-        if (req.getAttribute("_id") != null)
-            userId = req.getHeader("_id");
-        else
-            userId = req.getParameter("id");
-
-
+        userId = req.getParameter("id");
         dataMap.put("id", userId);
 
         System.out.println("Userid = " + userId);
@@ -64,15 +55,17 @@ public class UserAdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> dataMap = new HashMap<>();
+        Map<String, Optional<Cookie>> cookieMap = new HashMap<>();
+        cookieMap = CookieControl.getCookieMap(req);
 
-        dataMap.put("username", req.getServletContext().getAttribute("username"));
-        dataMap.put("date", req.getServletContext().getAttribute("date"));
+
+        cookieMap.get("username").ifPresent(cookie -> dataMap.put("username", cookie.getName()));
+        dataMap.put("date", LocalDateTime.now().toString());
 
 
         String userId;
 
         userId = String.valueOf(req.getAttribute("_id"));
-
 
         System.out.println("Userid = " + userId);
         if (userId != null) {
@@ -85,4 +78,6 @@ public class UserAdminServlet extends HttpServlet {
         resp.getWriter().println(templateProcessor.getProcessedTemplate("userAdmin.html", dataMap));
 
     }
+
+
 }

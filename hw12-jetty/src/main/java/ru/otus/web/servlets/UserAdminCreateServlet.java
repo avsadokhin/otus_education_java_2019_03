@@ -5,6 +5,7 @@ import ru.otus.entity.AddressDataSet;
 import ru.otus.entity.PhoneDataSet;
 import ru.otus.entity.User;
 import ru.otus.web.TemplateProcessor;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class UserAdminCreateServlet extends HttpServlet {
-    public static String pathSpec = "/userAdminCreate";
+    private static String CONTENT_TYPE = "text/html; charset=utf-8";
+    private final String URL_ADMIN_PATH = "userAdmin";
     private final TemplateProcessor templateProcessor;
     private DbService<User> dbUserService;
 
@@ -34,26 +36,45 @@ public class UserAdminCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = new User();
-        user.setName(req.getParameter("name"));
-        user.setAge(Integer.parseInt(req.getParameter("age")));
-        user.setAddress(new AddressDataSet(req.getParameter("address")));
+        user = getUserDataFromRequest(req);
 
-        String[] phoneNumberList = req.getParameterValues("number");
+        if (user != null) {
+            dbUserService.create(user);
+            req.setAttribute("_id", String.valueOf(user.getId()));
+            resp.setContentType(CONTENT_TYPE);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            resp.setContentType(CONTENT_TYPE);
+            resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+        }
+        req.getRequestDispatcher(URL_ADMIN_PATH).forward(req, resp);
+
+    }
+
+    private User getUserDataFromRequest(HttpServletRequest request) {
+        final String username = request.getParameter("name");
+        final String ageString = request.getParameter("age");
+        final String address = request.getParameter("address");
+        final String[] phoneNumbers = request.getParameterValues("number");
+
+        int age = 0;
+        if (ageString != null && !ageString.isBlank()) {
+            age = Integer.parseInt(ageString);
+        }
+
         List<PhoneDataSet> phoneDataSetList = new ArrayList<>();
-        for (String phone : phoneNumberList) {
+        for (String phone : phoneNumbers) {
             if (!phone.isBlank()) {
                 phoneDataSetList.add(new PhoneDataSet(phone));
             }
 
         }
+
+        final User user = new User(username, age);
+        user.setAddress(new AddressDataSet(address));
         user.setPhoneList(phoneDataSetList);
 
-        dbUserService.create(user);
-
-        req.setAttribute("_id", String.valueOf(user.getId()));
-
-        req.getRequestDispatcher("userAdmin").forward(req, resp);
-
+        return user;
     }
 
 

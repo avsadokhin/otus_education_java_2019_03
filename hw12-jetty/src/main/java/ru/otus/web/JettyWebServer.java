@@ -28,11 +28,13 @@ public class JettyWebServer {
     private final static String HIBERNATE_CFG = "hibernate.cfg.xml";
 
     private DbService<User> dbUserService;
+    private Server server;
 
-    public JettyWebServer(int PORT) {
+    public JettyWebServer(int PORT) throws MalformedURLException {
         this.PORT = PORT;
         this.dbUserService = new DbServiceHibernateUserImpl(getDbConfig());
         prepareDbTestData();
+        this.server = createServer(PORT);
     }
 
     private Configuration getDbConfig() {
@@ -44,8 +46,6 @@ public class JettyWebServer {
     }
 
     public void startWeb() throws Exception {
-
-        Server server = createServer(PORT);
         server.start();
         server.join();
     }
@@ -53,9 +53,10 @@ public class JettyWebServer {
     private Server createServer(int port) throws MalformedURLException {
         Server server = new Server(port);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        TemplateProcessor templateProcessor = new TemplateProcessor();
         context.addServlet(new ServletHolder(new LoginServlet()), "/login");
-        context.addServlet(new ServletHolder(new UserAdminServlet(dbUserService, new TemplateProcessor())), "/userAdmin");
-        context.addServlet(new ServletHolder(new UserAdminCreateServlet(dbUserService, new TemplateProcessor())), "/userAdminCreate");
+        context.addServlet(new ServletHolder(new UserAdminServlet(dbUserService, templateProcessor)), "/userAdmin");
+        context.addServlet(new ServletHolder(new UserAdminCreateServlet(dbUserService, templateProcessor)), "/userAdminCreate");
 
         server.setHandler(new HandlerList(context));
 
