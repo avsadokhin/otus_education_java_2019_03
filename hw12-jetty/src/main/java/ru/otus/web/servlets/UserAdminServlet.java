@@ -19,6 +19,9 @@ import java.util.*;
 public class UserAdminServlet extends HttpServlet {
     private final TemplateProcessor templateProcessor;
     private DbService<User> dbUserService;
+    private final String URL_ADMIN_PATH = "/userAdmin";
+    private final String USER_NAME_PARAM = "username";
+
 
     public UserAdminServlet(DbService<User> dbUserService, TemplateProcessor templateProcessor) {
         this.templateProcessor = templateProcessor;
@@ -34,7 +37,7 @@ public class UserAdminServlet extends HttpServlet {
         cookieMap = CookieControl.getCookieMap(req);
 
 
-        cookieMap.get("username").ifPresent(cookie -> dataMap.put("username", cookie.getName()));
+        cookieMap.get(USER_NAME_PARAM).ifPresent(cookie -> dataMap.put(USER_NAME_PARAM, cookie.getName()));
         dataMap.put("date", LocalDateTime.now().toString());
 
         String userId;
@@ -54,28 +57,11 @@ public class UserAdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Object> dataMap = new HashMap<>();
-        Map<String, Optional<Cookie>> cookieMap = new HashMap<>();
-        cookieMap = CookieControl.getCookieMap(req);
+        final String redirectAdminUrlTemplate = URL_ADMIN_PATH + "?id=%s";
 
+        String redirectAdminUrl = String.format(redirectAdminUrlTemplate, String.valueOf(req.getAttribute("_id")));
 
-        cookieMap.get("username").ifPresent(cookie -> dataMap.put("username", cookie.getName()));
-        dataMap.put("date", LocalDateTime.now().toString());
-
-
-        String userId;
-
-        userId = String.valueOf(req.getAttribute("_id"));
-
-        System.out.println("Userid = " + userId);
-        if (userId != null) {
-            dataMap.put("id", userId);
-            User user = dbUserService.findById(Long.parseLong(userId));
-            if (user != null) dataMap.put("user", user);
-
-        }
-
-        resp.getWriter().println(templateProcessor.getProcessedTemplate("userAdmin.html", dataMap));
+        resp.sendRedirect(redirectAdminUrl);
 
     }
 
