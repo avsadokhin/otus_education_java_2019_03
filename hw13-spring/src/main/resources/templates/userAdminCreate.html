@@ -21,6 +21,8 @@ tr:nth-child(even) {
 }
 
 
+
+
     </style>
 </head>
 
@@ -38,7 +40,8 @@ tr:nth-child(even) {
             <tr>
                 <td><input type="text" placeholder="Enter User Name" name="name" required th:value="${user.name}"></td>
                 <td><input type="text" placeholder="Enter Age" name="age" required th:value="${user.age}"></td>
-                <td><input type="text" placeholder="Enter Address" name="address" required th:value="${user.address}"></td>
+                <td><input type="text" placeholder="Enter Address" name="address" required th:value="${user.address}">
+                </td>
             </tr>
 
 
@@ -50,13 +53,9 @@ tr:nth-child(even) {
             </tr>
 
             <tr>
-                <td><input type="text" placeholder="Enter Number 1" name="number" ></td>
-                <td><input type="text" placeholder="Enter Number 2" name="number" ></td>
+                <td><input type="text" placeholder="Enter Number 1" name="phone"></td>
+                <td><input type="text" placeholder="Enter Number 2" name="phone"></td>
             </tr>
-       <!--     <tr>
-                <td><input type="text" placeholder="Enter Number 2" name="number" th:value="${user.address.number}"></td>
-            </tr>
--->
         </table>
 
         <button type="submit">Submit</button>

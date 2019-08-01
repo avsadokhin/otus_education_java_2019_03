@@ -28,6 +28,7 @@ public class UserController {
     private final String MODEL_ATTR_USERNAME = "username";
     private final String MODEL_ATTR_DATE = "date";
     private final String MODEL_ATTR_USER = "user";
+    private final String MODEL_ATTR_PHONE = "phone";
     private final String MODEL_ATTR_USER_ID = "id";
 
     private final DbService<User> repository;
@@ -81,7 +82,7 @@ public class UserController {
     @GetMapping("/userAdminCreate")
     public String userCreate(Model model) {
         model.addAttribute(MODEL_ATTR_USER, new User());
-        model.addAttribute("phone", Arrays.asList(new PhoneDataSet()));
+        //model.addAttribute(MODEL_ATTR_PHONE, Arrays.asList(new PhoneDataSet()));
         return "userAdminCreate.html";
     }
 
@@ -90,7 +91,7 @@ public class UserController {
 
         RedirectView redirectView = new RedirectView("/userAdmin", true);
 
-        final String[] phoneNumbers = request.getParameterValues("number");
+        final String[] phoneNumbers = request.getParameterValues(MODEL_ATTR_PHONE);
 
 
         List<PhoneDataSet> phoneDataSetList = new ArrayList<>();
@@ -98,12 +99,12 @@ public class UserController {
             if (!phone.isBlank()) {
                 phoneDataSetList.add(new PhoneDataSet(phone));
             }
-
         }
 
         if (user != null) {
-           user.setPhoneList(phoneDataSetList);
+            user.setPhoneList(phoneDataSetList);
             repository.create(user);
+
             attributes.addAttribute(WEB_PARAM_USER_ID, String.valueOf(user.getId()));
         } else {
             redirectView.setStatusCode(HttpStatus.NOT_ACCEPTABLE);
