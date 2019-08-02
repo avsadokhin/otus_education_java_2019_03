@@ -66,7 +66,8 @@ span.psw {
      width: 100%;
   }
 }
-</style>
+
+    </style>
 </head>
 <body>
 
@@ -75,7 +76,7 @@ span.psw {
 <form th:action="@{/login}" th:method="post" accept-charset="utf-8">
 
     <div class="imgcontainer">
-      <img src="images/img_avatar.png}" alt="Avatar" class="avatar">
+        <img th:src="@{images/img_avatar.png}" alt="Avatar" class="avatar">
     </div>
 
 

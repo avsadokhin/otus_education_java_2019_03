@@ -30,4 +30,5 @@ public class UserWebSpringApplication extends AbstractAnnotationConfigDispatcher
         encodingFilter.setForceEncoding(true);
         return new Filter[]{encodingFilter};
     }
+
 }
