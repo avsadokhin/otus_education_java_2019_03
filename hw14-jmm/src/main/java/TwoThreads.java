@@ -33,11 +33,7 @@ public class TwoThreads {
     }
 
     private void makeCount(int cnt) {
-        boolean isCounted;
-        while (true) {
-            isCounted = playTurn(cnt);
-            if (isCounted) break;
-        }
+        while (!playTurn(cnt)) ;
 
     }
 
@@ -57,3 +53,4 @@ public class TwoThreads {
 
 
 }
+
