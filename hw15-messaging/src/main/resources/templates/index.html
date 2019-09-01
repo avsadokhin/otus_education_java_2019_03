@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8 width=device-width, initial-scale=1"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript" src="users.js"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+    </style>
+</head>
+
+<body onload="initWebSocket()">
+<div id="inputParametersForm">
+    <h2>Create User Page</h2>
+    <table>
+        <tr>
+            <th>NAME</th>
+            <th>AGE</th>
+            <th>ADDRESS</th>
+        </tr>
+
+        <tr>
+            <td><input type="text" placeholder="Name" id="nameInput" name="name" required></td>
+            <td><input type="text" placeholder="Age" id="ageInput" name="age" required></td>
+            <td><input type="text" placeholder="Address" id="addressInput" name="address"></td>
+        </tr>
+    </table>
+    </br>
+    <input id="createSubmit" type="submit" value="createUser">
+</div>
+
+<br>
+<br>
+<h2>User List Table:</h2>
+<div id="userListDiv"></div>
+</body>
+
+</html>
