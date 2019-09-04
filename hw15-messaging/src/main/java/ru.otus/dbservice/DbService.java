@@ -1,9 +1,11 @@
 package ru.otus.dbservice;
 
+import ru.otus.messaging.core.Addressee;
+
 import java.io.Serializable;
 import java.util.List;
 
-public interface DbService<T> {
+public interface DbService<T> extends Addressee {
 
     void create(T entity);
 

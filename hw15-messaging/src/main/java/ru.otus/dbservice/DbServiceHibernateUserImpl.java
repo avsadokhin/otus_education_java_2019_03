@@ -7,6 +7,9 @@ import org.hibernate.cfg.Configuration;
 import ru.otus.dao.EntityDao;
 import ru.otus.dao.UserDaoHibernateImpl;
 import ru.otus.entity.User;
+import ru.otus.messaging.MessageSystemContext;
+import ru.otus.messaging.core.Address;
+import ru.otus.messaging.core.MessageSystem;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,9 +20,15 @@ import java.util.function.Function;
 public class DbServiceHibernateUserImpl implements DbService {
 
     private final SessionFactory sessionFactory;
+    private final MessageSystemContext context;
+    private final Address address;
 
-    public DbServiceHibernateUserImpl(Configuration configuration) {
+    public DbServiceHibernateUserImpl(Configuration configuration, MessageSystemContext context, Address address) {
         this.sessionFactory = configuration.buildSessionFactory();
+        this.context = context;
+        this.address = address;
+        context.setDbAddress(address);
+        context.getMessageSystem().registerAddressee(this);
     }
 
     private void updateSessionWithTransaction(Consumer<Session> function) {
@@ -102,5 +111,15 @@ public class DbServiceHibernateUserImpl implements DbService {
         });
 
 
+    }
+
+    @Override
+    public Address getAddress() {
+        return address;
+    }
+
+    @Override
+    public MessageSystem getMS() {
+        return context.getMessageSystem();
     }
 }

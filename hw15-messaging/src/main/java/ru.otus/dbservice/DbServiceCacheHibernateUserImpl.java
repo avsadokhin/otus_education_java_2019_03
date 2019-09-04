@@ -8,6 +8,9 @@ import ru.otus.cache.CacheEngine;
 import ru.otus.dao.EntityDao;
 import ru.otus.dao.UserDaoHibernateImpl;
 import ru.otus.entity.User;
+import ru.otus.messaging.MessageSystemContext;
+import ru.otus.messaging.core.Address;
+import ru.otus.messaging.core.MessageSystem;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,10 +21,16 @@ public class DbServiceCacheHibernateUserImpl implements DbService<User> {
 
     private final SessionFactory sessionFactory;
     private final CacheEngine<Long, User> cache;
+    private final MessageSystemContext context;
+    private final Address address;
 
-    public DbServiceCacheHibernateUserImpl(Configuration configuration, CacheEngine cache) {
+    public DbServiceCacheHibernateUserImpl(Configuration configuration, CacheEngine cache,  MessageSystemContext context, Address address) {
         this.sessionFactory = configuration.buildSessionFactory();
         this.cache = cache;
+        this.context = context;
+        this.address = address;
+        context.setDbAddress(address);
+        context.getMessageSystem().registerAddressee(this);
     }
 
     private void updateSessionWithTransaction(Consumer<Session> function) {
@@ -113,5 +122,15 @@ public class DbServiceCacheHibernateUserImpl implements DbService<User> {
         });
 
 
+    }
+
+    @Override
+    public Address getAddress() {
+        return address;
+    }
+
+    @Override
+    public MessageSystem getMS() {
+        return context.getMessageSystem();
     }
 }

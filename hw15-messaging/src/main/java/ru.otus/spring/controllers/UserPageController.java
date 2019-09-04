@@ -7,18 +7,24 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.otus.entity.AddressDataSet;
 import ru.otus.entity.User;
+import ru.otus.front.FrontService;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
 public class UserPageController {
+    private final FrontService frontService;
+    /*   private final SimpMessagingTemplate messagingTemplate;
 
-      private final SimpMessagingTemplate messagingTemplate;
 
-
-    public UserPageController(SimpMessagingTemplate messagingTemplate) {
+   public UserPageController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
+    }
+*/
+
+    public UserPageController(FrontService frontService) {
+        this.frontService = frontService;
     }
 
     @MessageMapping("/user")
@@ -26,15 +32,15 @@ public class UserPageController {
         Logger logger = LoggerFactory.getLogger(UserPageController.class);
         logger.info("Handling request: {}", request);
         System.out.println(request.toString());
-        List<User> userList = getUserList();
-
+       // List<User> userList = getUserList();
+        frontService.getUserCollectionRequest();
        /* final var message = messageSystem.createDatabaseMessage(request);
         messageSystem.sendMessage(message);*/
     }
 
-    public List<User> getUserList(){
+    public /*List<User>*/ void getUserList(){
 
-        User user = new User();
+      /*  User user = new User();
         user.setName("Test");
         user.setAge(21);
         AddressDataSet addressDataSet = new AddressDataSet();
@@ -42,7 +48,8 @@ public class UserPageController {
         user.setAddress(addressDataSet);
         System.out.println(user);
         messagingTemplate.convertAndSend("/topic/usersResponse", user);
-        return  Arrays.asList(user);
+        return  Arrays.asList(user);*/
+      frontService.getMessagingTemplate().convertAndSend("/topic/usersResponse", frontService.getUserList());
     }
 
 }
