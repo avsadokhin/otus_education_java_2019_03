@@ -27,7 +27,7 @@
     </style>
 </head>
 
-<body onload="initWebSocket()">
+<body onload="init()">
 <div id="inputParametersForm">
     <h2>Create User Page</h2>
     <table>
@@ -43,8 +43,19 @@
             <td><input type="text" placeholder="Address" id="addressInput" name="address"></td>
         </tr>
     </table>
+    <h3>Phone List</h3>
+    <table>
+        <tr>
+            <th>NUMBER</th>
+        </tr>
+       <tr>
+            <td><input type="text" placeholder="Number 1" id="phone1" name="phone"></td>
+            <td><input type="text" placeholder="Number 2" id="phone2" name="phone"></td>
+        </tr>
+    </table>
     </br>
-    <input id="createSubmit" type="submit" value="createUser">
+    <button type="submit" id="createSubmit">createUser</button>
+    <button type="submit" id="getSubmit">getUsers</button>
 </div>
 
 <br>

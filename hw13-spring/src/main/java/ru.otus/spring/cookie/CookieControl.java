@@ -1,4 +1,4 @@
-package ru.otus.spring.cookie;
+package ru.otus.cookie;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 function path () {
     return window.location.pathname;
 }
-const connect= () => {
+const connect=  () => {
     webSocketEndpoit = path() + "/web-socket-endpoint";
     stompClient = Stomp.over(new SockJS(webSocketEndpoit));
 
@@ -14,8 +14,11 @@ const connect= () => {
 });
 };
 
-function initWebSocket() {
-    connect();
+
+
+function init() {
+     connect();
+
 }
 
 $(window).on("beforeunload", function () {
@@ -30,14 +33,16 @@ const disconnect = () => {
 };
 
 function showUsersResultTable(users) {
-    console.log('showUsersResultTable...');
-    /*let rows="";
-    let result = "<table><tr> <th>Name</th><th>Age</th><th>Address</th> </tr>" + rows + "</table>";
+    let rows="";
+
     for (let key in users) {
-        rows += "<tr><td>" +key.name +"</td>"+ "<td>" +key.age +"</td>" + + "<td>" +key.address +"</td></tr>";
+        rows += "<tr><td>" +users[key].id +"</td><td>" +users[key].name +"</td><td>" +users[key].age +"</td><td>" +users[key].address.street
+            +"</td><td>" +users[key].phoneList[0].number +"</td><td>" +users[key].phoneList[1].number +"</td></tr>";
     }
-    return result;*/
-    return users;
+
+    let result = "<table><tr> <th>Id</th><th>Name</th><th>Age</th><th>Address</th><th>Phone1</th><th>Phone1</th></tr>" + rows + "</table>";
+
+    return result;
 }
 
 
@@ -46,7 +51,16 @@ const createUser =  () =>{
     stompClient.send(
         "/app/user",
         {},
-        JSON.stringify({'name': $('#nameInput').val(), 'age': $('#ageInput').val(), 'address': $('#addressInput').val()})
+        JSON.stringify({'name': $('#nameInput').val(), 'age': $('#ageInput').val(), 'address': $('#addressInput').val(),
+            'phoneList':[{'number':$('#phone1').val()},{'number':$('#phone2').val()}]}) );
+}
+
+const getUsers =  () =>{
+    console.log('getUsers...');
+    stompClient.send(
+        "/app/getUsers",
+        {},
+        {}
     );
 }
 
@@ -55,6 +69,7 @@ $(function () {
         event.preventDefault();
 });
    $("#createSubmit").click(createUser);
+    $("#getSubmit").click(getUsers);
 });
 
 

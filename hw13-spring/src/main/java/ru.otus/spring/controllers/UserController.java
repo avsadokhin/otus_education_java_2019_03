@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import ru.otus.dbservice.DbService;
 import ru.otus.entity.PhoneDataSet;
 import ru.otus.entity.User;
-import ru.otus.spring.cookie.CookieControl;
+import ru.otus.cookie.CookieControl;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

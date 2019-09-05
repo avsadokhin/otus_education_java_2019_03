@@ -1,4 +1,4 @@
-package ru.otus.spring.services.backend;
+package ru.otus.config;
 
 import org.hibernate.cfg.Configuration;
 import org.reflections.Reflections;

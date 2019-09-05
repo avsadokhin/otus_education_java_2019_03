@@ -17,7 +17,7 @@ public class MessageCreateUserRequest extends MessageToBackEnd {
 
     @Override
     public <T extends User> void exec(DbService<T> dbService) {
-        logger.log(Level.INFO, "Create user object(" + userData + ")");
+        logger.log(Level.INFO, "MessageToBackEnd.MessageCreateUserRequest: Create user object(" + userData + ")");
         dbService.create((T) userData);
     }
 }

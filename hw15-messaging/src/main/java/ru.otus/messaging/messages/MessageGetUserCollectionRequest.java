@@ -16,19 +16,14 @@ public class MessageGetUserCollectionRequest extends MessageToBackEnd {
 
     @Override
     public <T extends User> void exec(DbService<T> dbService) {
-        logger.log(Level.INFO, "Get MessageGetUserCollectionRequest...");
+        logger.log(Level.INFO, "MessageToBackEnd.MessageGetUserCollectionRequest");
         final List<T> contentList = dbService.findAll();
         if (contentList == null) {
-            logger.log(Level.INFO, "contentList from DB is null");
-        }
-        else {
-                dbService.getMS().sendMessage(new MessageGetUserCollectionResponse<>(getTo(), getFrom(), contentList));
-            }
-        /*} else if (contentList. instanceof User) {
-            dbService.getMS().sendMessage(new MessageGetUserCollectionResponse<>(getTo(), getFrom(), userList));
+            logger.log(Level.INFO, "contentList is null");
         } else {
-            logger.log(Level.INFO, "Object type from DB(" + userList.getClass() + ") is not supported");
-        }*/
+            dbService.getMS().sendMessage(new MessageGetUserCollectionResponse<>(getTo(), getFrom(), contentList));
+        }
+
     }
 
 

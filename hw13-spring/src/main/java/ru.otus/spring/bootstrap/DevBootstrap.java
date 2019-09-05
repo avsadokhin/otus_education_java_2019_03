@@ -1,4 +1,4 @@
-package ru.otus.spring.bootstrap;
+package ru.otus.bootstrap;
 
 
 import org.springframework.context.ApplicationListener;

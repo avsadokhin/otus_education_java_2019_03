@@ -1,11 +1,9 @@
-package ru.otus.spring.repositories;
+package ru.otus.config;
 
 import org.springframework.stereotype.Repository;
 import ru.otus.dbservice.DbServiceHibernateUserImpl;
 import ru.otus.messaging.MessageSystemContext;
 import ru.otus.messaging.core.Address;
-import ru.otus.messaging.core.MessageSystem;
-import ru.otus.spring.services.backend.HibernateConfig;
 
 @Repository
 public class UserRepositoryImpl extends DbServiceHibernateUserImpl {

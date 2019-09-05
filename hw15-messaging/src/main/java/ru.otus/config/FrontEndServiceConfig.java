@@ -1,4 +1,4 @@
-package ru.otus.spring.services.frontend;
+package ru.otus.config;
 
 
 import org.springframework.context.annotation.Configuration;

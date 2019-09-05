@@ -1,8 +1,8 @@
-package ru.otus.spring;
+package ru.otus;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import ru.otus.spring.config.WebConfig;
+import ru.otus.config.*;
 
 import javax.servlet.Filter;
 
@@ -20,7 +20,7 @@ public class UserWebSpringApplication extends AbstractAnnotationConfigDispatcher
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/","/user"};
+        return new String[]{"/","/user","/getUsers"};
     }
 
     @Override
