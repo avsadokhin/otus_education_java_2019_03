@@ -3,11 +3,11 @@ import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
-import ru.otus.dbservice.DbService;
-import ru.otus.dbservice.DbServiceHibernateUserImpl;
-import ru.otus.entity.AddressDataSet;
-import ru.otus.entity.PhoneDataSet;
-import ru.otus.entity.User;
+import ru.otus.hw15.dbservice.DbService;
+import ru.otus.hw15.dbservice.DbServiceHibernateUserImpl;
+import ru.otus.hw15.entity.AddressDataSet;
+import ru.otus.hw15.entity.PhoneDataSet;
+import ru.otus.hw15.entity.User;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;

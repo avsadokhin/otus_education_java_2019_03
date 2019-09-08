@@ -1,0 +1,68 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Users</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script type="text/javascript" src="users.js"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+    </style>
+</head>
+
+<body onload="init()">
+<div id="inputParametersForm">
+    <h2>Create User Page</h2>
+    <table>
+        <tr>
+            <th>NAME</th>
+            <th>AGE</th>
+            <th>ADDRESS</th>
+        </tr>
+
+        <tr>
+            <td><input type="text" placeholder="Name" id="nameInput" name="name" required></td>
+            <td><input type="text" placeholder="Age" id="ageInput" name="age" required></td>
+            <td><input type="text" placeholder="Address" id="addressInput" name="address"></td>
+        </tr>
+    </table>
+    <h3>Phone List</h3>
+    <table>
+        <tr>
+            <th>NUMBER</th>
+        </tr>
+       <tr>
+            <td><input type="text" placeholder="Number 1" id="phone1" name="phone"></td>
+            <td><input type="text" placeholder="Number 2" id="phone2" name="phone"></td>
+        </tr>
+    </table>
+    </br>
+    <button type="submit" id="createSubmit">createUser</button>
+    <button type="submit" id="getSubmit">getUsers</button>
+</div>
+
+<br>
+<br>
+<h2>User List Table:</h2>
+<div id="userListDiv"></div>
+</body>
+
+</html>

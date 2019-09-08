@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.json.JsonObjectSerializer;
+import ru.otus.hw15.json.JsonObjectSerializer;
 
 public class JsonComplexTest {
     private Gson gson;

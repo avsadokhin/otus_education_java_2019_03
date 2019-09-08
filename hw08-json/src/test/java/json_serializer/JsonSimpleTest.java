@@ -4,7 +4,7 @@ import classes.TestClass;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.json.JsonObjectSerializer;
+import ru.otus.hw15.json.JsonObjectSerializer;
 
 import java.util.*;
 

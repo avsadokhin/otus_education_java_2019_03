@@ -1,13 +1,11 @@
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.otus.dao.Account;
-import ru.otus.dao.User;
-import ru.otus.dbservice.DataSourceH2;
-import ru.otus.dbservice.DbService;
-import ru.otus.dbservice.DbServiceImpl;
-import ru.otus.entity.EntityException;
+import ru.otus.hw15.dao.Account;
+import ru.otus.hw15.dbservice.DataSourceH2;
+import ru.otus.hw15.dbservice.DbService;
+import ru.otus.hw15.dbservice.DbServiceImpl;
+import ru.otus.hw15.entity.EntityException;
 
 import javax.sql.DataSource;
 

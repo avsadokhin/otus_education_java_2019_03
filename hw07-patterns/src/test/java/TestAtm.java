@@ -1,10 +1,10 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.atmbox.*;
-import ru.otus.department.DepartmentAtm;
-import ru.otus.banknote.Banknote;
-import ru.otus.banknote.BanknoteCell;
-import ru.otus.banknote.BanknoteStorage;
+import ru.otus.hw15.atmbox.AtmBoxImpl;
+import ru.otus.hw15.department.DepartmentAtm;
+import ru.otus.hw15.banknote.Banknote;
+import ru.otus.hw15.banknote.BanknoteCell;
+import ru.otus.hw15.banknote.BanknoteStorage;
 
 import java.util.HashMap;
 import java.util.HashSet;

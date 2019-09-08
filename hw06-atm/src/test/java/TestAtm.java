@@ -1,9 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.atm.AtmBoxImpl;
-import ru.otus.atm.Banknote;
-import ru.otus.atm.BanknoteCell;
-import ru.otus.atm.BanknoteStorage;
+import ru.otus.hw15.atm.AtmBoxImpl;
+import ru.otus.hw15.atm.Banknote;
+import ru.otus.hw15.atm.BanknoteCell;
+import ru.otus.hw15.atm.BanknoteStorage;
 
 import java.util.HashMap;
 import java.util.HashSet;
