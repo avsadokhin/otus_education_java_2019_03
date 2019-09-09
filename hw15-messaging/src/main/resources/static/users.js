@@ -1,13 +1,28 @@
 function path () {
     return window.location.pathname;
 }
+
+const setConnected = (connected) => {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    if (connected) {
+        $("#chatLine").show();
+    }
+    else {
+        $("#chatLine").hide();
+    }
+    $("#message").html("");
+}
+
 const connect=  () => {
-    webSocketEndpoit = path() + "/web-socket-endpoint";
+    webSocketEndpoit = /*path() + */"/web-socket-endpoint";
     stompClient = Stomp.over(new SockJS(webSocketEndpoit));
 
     stompClient.connect({}, (frame) => {
         console.log('Connected: ' + frame);
+    setConnected(true);
         stompClient.subscribe( '/topic/usersResponse', (usersCallback) => {
+
             console.log('usersResponse...');
             document.getElementById("userListDiv").innerHTML =
                 showUsersResultTable(JSON.parse(usersCallback.body));} );
@@ -29,7 +44,9 @@ const disconnect = () => {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
+    setConnected(false);
     console.log("Disconnected");
+
 };
 
 function showUsersResultTable(users) {
@@ -68,6 +85,8 @@ $(function () {
     $("form").on('submit', (event) => {
         event.preventDefault();
 });
+    $("#connect").click(connect);
+    $("#disconnect").click(disconnect);
    $("#createSubmit").click(createUser);
     $("#getSubmit").click(getUsers);
 });

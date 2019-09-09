@@ -7,7 +7,8 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script type="text/javascript" src="users.js"></script>
+    <script type="text/javascript" src="/users.js"></script>
+
 
     <style>
         table {
@@ -28,7 +29,14 @@
     </style>
 </head>
 
-<body onload="init()">
+<!--<body onload="init()">-->
+<div class="form-group">
+    <label for="connect">WebSocket connection:</label>
+    <button id="connect" class="btn btn-default" type="submit">Connect</button>
+    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+    </button>
+</div>
+
 <div id="inputParametersForm">
     <h2>Create User Page</h2>
     <table>
@@ -54,9 +62,10 @@
             <td><input type="text" placeholder="Number 2" id="phone2" name="phone"></td>
         </tr>
     </table>
-    </br>
+    <br/>
     <button type="submit" id="createSubmit">createUser</button>
     <button type="submit" id="getSubmit">getUsers</button>
+
 </div>
 
 <br>
