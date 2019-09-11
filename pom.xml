@@ -33,6 +33,7 @@
         <module>hw11-cache</module>
         <module>hw14-jmm</module>
         <module>hw15-messaging</module>
+        <module>hw16-multiprocess</module>
     </modules>
 
     <properties>
