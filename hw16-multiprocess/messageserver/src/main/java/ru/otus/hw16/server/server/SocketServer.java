@@ -1,7 +1,7 @@
 package ru.otus.hw16.server.server;
 
 
-import ru.otus.hw16.server.messages.Message;
+import ru.otus.hw16.server.messaging.core.Message;
 import ru.otus.hw16.server.workers.MessageWorker;
 import ru.otus.hw16.server.workers.SocketMessageWorker;
 

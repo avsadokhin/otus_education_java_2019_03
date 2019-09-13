@@ -1,7 +1,7 @@
 package ru.otus.hw16.server.workers;
 
 
-import ru.otus.hw16.server.messages.Message;
+import ru.otus.hw16.server.messaging.core.Message;
 
 import java.io.IOException;
 

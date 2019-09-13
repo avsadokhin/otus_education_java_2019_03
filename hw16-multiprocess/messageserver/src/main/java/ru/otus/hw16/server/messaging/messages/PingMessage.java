@@ -1,11 +1,21 @@
-package ru.otus.hw16.server.messages;
+package ru.otus.hw16.server.messaging.messages;
+
+
+import ru.otus.hw16.server.messaging.core.Address;
+import ru.otus.hw16.server.messaging.core.Addressee;
+import ru.otus.hw16.server.messaging.core.Message;
 
 public class PingMessage extends Message {
     private final long time;
 
-    public PingMessage() {
-        super(PingMessage.class);
+    public PingMessage(Address from, Address to) {
+        super(from, to);
         time = System.currentTimeMillis();
+    }
+
+    @Override
+    public void exec(Addressee addressee) {
+
     }
 
     public long getTime() {
