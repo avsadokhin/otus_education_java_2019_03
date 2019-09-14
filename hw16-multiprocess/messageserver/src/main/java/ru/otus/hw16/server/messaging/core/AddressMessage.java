@@ -1,13 +1,13 @@
-package ru.otus.hw16.frontend.messaging.core;
+package ru.otus.hw16.server.messaging.core;
 
 import java.util.logging.Logger;
 
-public abstract class Message {
-    protected final static Logger logger = Logger.getLogger(Message.class.getName());
+public abstract class AddressMessage {
+    protected final static Logger logger = Logger.getLogger(AddressMessage.class.getName());
     private final Address from;
     private final Address to;
 
-    public Message(Address from, Address to) {
+    public AddressMessage(Address from, Address to) {
         this.from = from;
         this.to = to;
     }

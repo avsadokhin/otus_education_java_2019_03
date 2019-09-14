@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ru.otus.hw16.server.messaging.core.Message;
-import ru.otus.hw16.server.messaging.messages.PingMessage;
+import ru.otus.hw16.server.messaging.core.MessageAddressRegistrationRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -95,7 +95,7 @@ public class SocketMessageWorker implements MessageWorker {
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(json);
         //String className = String.valueOf(jsonObject.get(Message.CLASS_NAME_VARIABLE));
-        Class<?> messageClass = PingMessage.class;
+        Class<?> messageClass = MessageAddressRegistrationRequest.class;
 
         return (Message) new Gson().fromJson(json, messageClass);
     }

@@ -1,21 +1,19 @@
-package ru.otus.hw16.server.messaging.messages;
+package ru.otus.hw16.server.messaging.core;
 
 
 import ru.otus.hw16.server.messaging.core.Address;
 import ru.otus.hw16.server.messaging.core.Addressee;
 import ru.otus.hw16.server.messaging.core.Message;
 
-public class PingMessage extends Message {
+import java.io.Serializable;
+
+public class MessageAddressRegistrationRequest extends Message {
     private final long time;
+    private final String addressName;
 
-    public PingMessage(Address from, Address to) {
-        super(from, to);
+    public MessageAddressRegistrationRequest(String addressName) {
         time = System.currentTimeMillis();
-    }
-
-    @Override
-    public void exec(Addressee addressee) {
-
+        this.addressName = addressName;
     }
 
     public long getTime() {
@@ -24,7 +22,8 @@ public class PingMessage extends Message {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PingMessage{");
+        final StringBuilder sb = new StringBuilder("MessageAddressRegistrationRequest{");
+        sb.append("addressName=").append(addressName).append(", ");
         sb.append("time=").append(time);
         sb.append('}');
         return sb.toString();

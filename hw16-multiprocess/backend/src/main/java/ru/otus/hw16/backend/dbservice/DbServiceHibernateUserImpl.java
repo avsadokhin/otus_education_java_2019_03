@@ -20,16 +20,9 @@ import java.util.function.Function;
 public class DbServiceHibernateUserImpl implements DbService {
 
     private final SessionFactory sessionFactory;
-    private final MessageSystemContext context;
-    private final Address address;
 
-    public DbServiceHibernateUserImpl(Configuration configuration, MessageSystemContext context, Address address) {
+    public DbServiceHibernateUserImpl(Configuration configuration) {
         this.sessionFactory = configuration.buildSessionFactory();
-        this.context = context;
-        this.address = address;
-        context.setDbAddress(address);
-      //  context.getSocketMessageWorker().registerAddressee(this);
-        context.getSocketMessageWorker().init();
     }
 
     private void updateSessionWithTransaction(Consumer<Session> function) {
@@ -114,18 +107,4 @@ public class DbServiceHibernateUserImpl implements DbService {
 
     }
 
-    @Override
-    public Address getAddress() {
-        return address;
-    }
-
-   /* @Override
-    public MessageSystemContext getContext() {
-        return context
-    }*/
-
-    @Override
-    public MessageWorker getMessageWorker() {
-        return context.getSocketMessageWorker();
-    }
 }

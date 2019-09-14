@@ -2,16 +2,11 @@ package ru.otus.hw16.frontend.front;
 
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ru.otus.hw16.frontend.entity.User;
-import ru.otus.hw16.frontend.messaging.MessageSystemContext;
-import ru.otus.hw16.frontend.messaging.core.Address;
-import ru.otus.hw16.frontend.messaging.core.Message;
-import ru.otus.hw16.frontend.messaging.core.MessageSystem;
-import ru.otus.hw16.frontend.messaging.messages.MessageCreateUserRequest;
-import ru.otus.hw16.frontend.messaging.messages.MessageGetUserCollectionRequest;
+import ru.otus.hw16.server.messaging.MessageSystemContext;
+import ru.otus.hw16.server.messaging.core.Address;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class FrontServiceImpl implements FrontService {
     private final SimpMessagingTemplate messagingTemplate;
@@ -25,7 +20,7 @@ public class FrontServiceImpl implements FrontService {
         this.messagingTemplate = messagingTemplate;
 
         context.setFrontAddress(address);
-        context.getMessageSystem().registerAddressee(this);
+        context.getSocketMessageWorker(). getMessageSystem().registerAddressee(this);
     }
 
     @Override

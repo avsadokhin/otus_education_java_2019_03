@@ -5,7 +5,7 @@ import ru.otus.hw16.server.messaging.core.Addressee;
 import java.io.Serializable;
 import java.util.List;
 
-public interface DbService<T> extends Addressee {
+public interface DbService<T>  {
 
     void create(T entity);
 
