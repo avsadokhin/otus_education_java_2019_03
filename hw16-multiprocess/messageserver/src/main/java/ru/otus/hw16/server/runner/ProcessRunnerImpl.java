@@ -19,7 +19,7 @@ public class ProcessRunnerImpl implements ProcessRunner {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("is proccess status: " + process.isAlive());
+        System.out.println("Статус запущенного процесса: " + process.isAlive());
     }
 
     @Override
@@ -40,9 +40,6 @@ public class ProcessRunnerImpl implements ProcessRunner {
         StreamListener output = new StreamListener(process.getInputStream(), "OUTPUT");
         output.start();
 
-
-        System.out.println(process.isAlive());
-
         return process;
     }
 
@@ -58,10 +55,10 @@ public class ProcessRunnerImpl implements ProcessRunner {
 
         @Override
         public void run() {
-            try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)){
+            try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String line;
-                while((line = bufferedReader.readLine()) !=  null){
+                while ((line = bufferedReader.readLine()) != null) {
                     out.append(type).append('>').append(line).append("\n");
                 }
             } catch (IOException e) {

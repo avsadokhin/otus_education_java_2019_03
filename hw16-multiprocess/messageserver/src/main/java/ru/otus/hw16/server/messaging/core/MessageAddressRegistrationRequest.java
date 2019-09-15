@@ -16,6 +16,10 @@ public class MessageAddressRegistrationRequest extends Message {
         this.addressName = addressName;
     }
 
+    public String getAddressName() {
+        return addressName;
+    }
+
     public long getTime() {
         return time;
     }

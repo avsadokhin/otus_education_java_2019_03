@@ -9,7 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class MessageServerClientImpl implements MessageServerClient {
-    private static final Logger logger = Logger.getLogger(MessageServerClient.class.getName());
+    private static final Logger logger = Logger.getLogger(MessageServerClientImpl.class.getName());
+
     private static final long PAUSE_MS = 1000;
 
     private SocketMessageWorker socketMessageWorker;
@@ -30,12 +31,12 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
         this.addressTo = registerToRequest(to);
     }
 
-    @Override
+
     public SocketMessageWorker getSocketMessageWorker() {
         return socketMessageWorker;
     }
 
-    @Override
+
     public Address registerFromRequest(String addressName) {
         socketMessageWorker.send(new MessageAddressRegistrationRequest(addressName));
         Address address = null;
@@ -51,7 +52,6 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
     }
 
 
-    @Override
     public Address registerToRequest(String addressName) {
         Address address = null;
         while (address == null) {
@@ -68,22 +68,20 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
         return address;
     }
 
-    @Override
     public void startMessaging() {
 
     }
 
-    @Override
+
     public Address getAddressTo() {
         return addressTo;
     }
 
-    @Override
+
     public Address getAddressFrom() {
         return addressFrom;
     }
 
-    @Override
     public void close() throws IOException {
         socketMessageWorker.close();
     }

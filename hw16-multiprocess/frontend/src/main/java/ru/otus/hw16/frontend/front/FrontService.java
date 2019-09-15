@@ -3,7 +3,7 @@ package ru.otus.hw16.frontend.front;
 
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ru.otus.hw16.frontend.entity.User;
-import ru.otus.hw16.frontend.messaging.core.Addressee;
+import ru.otus.hw16.server.messaging.core.Addressee;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package ru.otus.hw16.server.messaging.core;
 
 import java.util.logging.Logger;
 
-public abstract class AddressMessage {
+public abstract class AddressMessage extends Message{
     protected final static Logger logger = Logger.getLogger(AddressMessage.class.getName());
     private final Address from;
     private final Address to;

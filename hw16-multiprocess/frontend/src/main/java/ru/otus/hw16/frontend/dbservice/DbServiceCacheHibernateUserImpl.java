@@ -8,9 +8,6 @@ import ru.otus.hw16.frontend.cache.CacheEngine;
 import ru.otus.hw16.frontend.dao.EntityDao;
 import ru.otus.hw16.frontend.dao.UserDaoHibernateImpl;
 import ru.otus.hw16.frontend.entity.User;
-import ru.otus.hw16.frontend.messaging.MessageSystemContext;
-import ru.otus.hw16.frontend.messaging.core.Address;
-import ru.otus.hw16.frontend.messaging.core.MessageSystem;
 
 import java.io.Serializable;
 import java.util.List;

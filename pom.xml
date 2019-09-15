@@ -21,7 +21,7 @@
     </developers>
 
     <modules>
-        <module>hw01-maven</module>
+   <!--     <module>hw01-maven</module>
         <module>hw02-collections</module>
         <module>hw03-annotations</module>
         <module>hw04-byteCodes</module>
@@ -32,7 +32,7 @@
         <module>hw10-hibernate</module>
         <module>hw11-cache</module>
         <module>hw14-jmm</module>
-        <module>hw15-messaging</module>
+        <module>hw15-messaging</module>-->
         <module>hw16-multiprocess</module>
     </modules>
 

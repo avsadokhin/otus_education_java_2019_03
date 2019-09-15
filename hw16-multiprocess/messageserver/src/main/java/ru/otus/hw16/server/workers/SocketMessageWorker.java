@@ -7,10 +7,7 @@ import com.google.gson.JsonParser;
 import ru.otus.hw16.server.messaging.core.Message;
 import ru.otus.hw16.server.messaging.core.MessageAddressRegistrationRequest;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -57,22 +54,23 @@ public class SocketMessageWorker implements MessageWorker {
         executorService.shutdown();
     }
 
-    
-    private void sendMessage(){
-        try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)){
-            while (socket.isConnected()){
+
+    private void sendMessage() {
+        try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+            while (socket.isConnected()) {
                 Message message = output.take();
-                String json = new Gson().toJson(message);
+            /*    String json = new Gson().toJson(message);
                 out.println(json);
-                out.println();
+                out.println();*/
+                out.writeObject(message);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void receiveMessage(){
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
+    private void receiveMessage() {
+       /* try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
             String inputLine;
             StringBuilder stringBuilder = new StringBuilder();
             while ((inputLine = reader.readLine()) != null){
@@ -86,6 +84,20 @@ public class SocketMessageWorker implements MessageWorker {
             }
         }  catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }*/
+        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+            while (socket.isConnected()) {
+                final Message message = (Message) in.readObject();
+                input.add(message);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }

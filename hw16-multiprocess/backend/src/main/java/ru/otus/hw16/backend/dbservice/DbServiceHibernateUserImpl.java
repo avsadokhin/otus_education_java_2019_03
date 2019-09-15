@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import ru.otus.hw16.backend.dao.EntityDao;
 import ru.otus.hw16.backend.dao.UserDaoHibernateImpl;
 import ru.otus.hw16.backend.entity.User;
@@ -11,18 +13,26 @@ import ru.otus.hw16.server.messaging.MessageSystemContext;
 import ru.otus.hw16.server.messaging.core.Address;
 import ru.otus.hw16.server.workers.MessageWorker;
 
+import javax.persistence.EntityManagerFactory;
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-
+@Repository
 public class DbServiceHibernateUserImpl implements DbService {
 
     private final SessionFactory sessionFactory;
+/*
 
     public DbServiceHibernateUserImpl(Configuration configuration) {
         this.sessionFactory = configuration.buildSessionFactory();
+    }
+*/
+
+    @Autowired
+    public DbServiceHibernateUserImpl(EntityManagerFactory sessionFactory) {
+        this.sessionFactory = sessionFactory.unwrap(SessionFactory.class);
     }
 
     private void updateSessionWithTransaction(Consumer<Session> function) {
