@@ -31,15 +31,24 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <!--    <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-data-jpa</artifactId>
 
-        </dependency>
+          </dependency>-->
 
+         <dependency>
+             <groupId>ru.otus</groupId>
+             <artifactId>messageserver</artifactId>
+             <version>2019-03-01-SNAPSHOT</version>
+             <scope>compile</scope>
+         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>ru.otus</groupId>
+            <artifactId>backend</artifactId>
+            <version>2019-03-01-SNAPSHOT</version>
+            <classifier>app-to-import</classifier>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -73,14 +82,9 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.10.0.pr1</version>
         </dependency>
-        <dependency>
-            <groupId>ru.otus</groupId>
-            <artifactId>messageserver</artifactId>
-            <version>2019-03-01-SNAPSHOT</version>
-        </dependency>
+
 
     </dependencies>
-
     <build>
         <finalName>front</finalName>
         <plugins>
@@ -88,6 +92,32 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+       <!--     <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                      <configuration>
+
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>ru.otus.hw16.frontend.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
         </plugins>
     </build>
 </project>

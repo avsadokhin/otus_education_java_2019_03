@@ -68,6 +68,7 @@ public class SocketServer implements SocketServerMBean {
                     clientAddressMap.get(request.getAddressName()).add(address);
                     logger.log(Level.INFO, "Зарегистрирован адрес: " + address);
                     worker.send(new MessageAddressRegistrationResponse(address));
+                    logger.log(Level.INFO, "Отправлен ответ о регистрации");
 
                     continue;
                 } else if (message instanceof MessageGetAddressRegistrationRequest) {
@@ -78,7 +79,15 @@ public class SocketServer implements SocketServerMBean {
                         worker.send(new MessageGetAddressRegistrationResponse(null));
                     }
 
+                } else if (message instanceof AddressMessage) {
+                    final AddressMessage request = (AddressMessage) message;
+                    if (addressMessageWorkerMap.containsKey(request.getTo())) {
+                        addressMessageWorkerMap.get(request.getTo()).send(message);
+                    } else {
+                        logger.log(Level.WARNING, "Адрес назначение не определен: " + request.getTo());
+                    }
                 }
+                else logger.log(Level.WARNING, "Тип сообщения не определен: " + message.getClass());
             }
             try {
                 Thread.sleep(MIRROR_DELAY_MS);

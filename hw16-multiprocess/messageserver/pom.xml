@@ -20,7 +20,7 @@
 
     <build>
         <finalName>${project.name}</finalName>
-        <plugins>
+       <!-- <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -44,6 +44,20 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+        </plugins>-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>ru.otus.hw16.server.MainServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>

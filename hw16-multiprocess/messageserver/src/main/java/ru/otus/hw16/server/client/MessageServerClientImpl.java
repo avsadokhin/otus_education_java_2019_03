@@ -41,7 +41,7 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
         socketMessageWorker.send(new MessageAddressRegistrationRequest(addressName));
         Address address = null;
         try {
-            MessageAddressRegistrationResponse addressRegistrationResponse = (MessageAddressRegistrationResponse) socketMessageWorker.take();
+            final MessageAddressRegistrationResponse addressRegistrationResponse = (MessageAddressRegistrationResponse) socketMessageWorker.take();
             address = addressRegistrationResponse.getAddress();
             logger.log(Level.INFO, "Регистрация адреса '" + addressName + "'. Получен адрес от MessageServer: " + address);
         } catch (InterruptedException e) {

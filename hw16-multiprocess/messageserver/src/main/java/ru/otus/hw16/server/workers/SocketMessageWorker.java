@@ -58,7 +58,7 @@ public class SocketMessageWorker implements MessageWorker {
     private void sendMessage() {
         try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
             while (socket.isConnected()) {
-                Message message = output.take();
+                final Message message = output.take();
             /*    String json = new Gson().toJson(message);
                 out.println(json);
                 out.println();*/

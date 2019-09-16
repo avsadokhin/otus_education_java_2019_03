@@ -1,9 +1,10 @@
 package ru.otus.hw16.server.messaging.core;
 
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class Address {
+public final class Address implements Serializable {
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger();
     private final String id;
 

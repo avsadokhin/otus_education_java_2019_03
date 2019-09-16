@@ -1,11 +1,13 @@
 package ru.otus.hw16.frontend.front;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.otus.hw16.frontend.entity.User;
+import ru.otus.hw16.backend.entity.User;
+
 
 @Controller
 public class UserPageController {

@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainServer {
 
+    private static final String FRONT_CLIENT_COMMAND_1 = String.format("java -jar ./hw16-multiprocess/frontend/target/front.jar --server.port=%d --host localhost --port 5050 --clientId=%s", 8080, "FRONT");
     private static final String BD_CLIENT_COMMAND_1 = String.format("java -jar ./hw16-multiprocess/backend/target/backend.jar --host=localhost --port=5050 --clientId=%s", "DB");
     private static final String BD_CLIENT_COMMAND_2 = String.format("java -jar ./hw16-multiprocess/backend/target/backend.jar --host=localhost --port=5050 --clientId=%s", "DB");
 
@@ -27,9 +28,10 @@ public class MainServer {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         startClient(executorService, BD_CLIENT_COMMAND_1);
-        startClient(executorService, BD_CLIENT_COMMAND_2);
+        startClient(executorService, FRONT_CLIENT_COMMAND_1);
+        //startClient(executorService, BD_CLIENT_COMMAND_2);
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-        ObjectName objectName = new ObjectName("ru.alex:type=Server");
+        ObjectName objectName = new ObjectName("ru.otus:type=Server");
 
         SocketServer server = new SocketServer();
 
