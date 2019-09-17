@@ -3,15 +3,19 @@ package ru.otus.hw16.backend.dbservice;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw16.backend.dao.EntityDao;
 import ru.otus.hw16.backend.dao.UserDaoHibernateImpl;
 import ru.otus.hw16.model.entity.User;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManagerFactory;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -27,8 +31,13 @@ public class DbServiceHibernateUserImpl implements DbService {
 */
 
     @Autowired
-    public DbServiceHibernateUserImpl(EntityManagerFactory sessionFactory) {
-        this.sessionFactory = sessionFactory.unwrap(SessionFactory.class);
+    public DbServiceHibernateUserImpl(/*Configuration configuration*//*,EntityManagerFactory sessionFactory*/) {
+       //this.sessionFactory = sessionFactory.unwrap(SessionFactory.class);
+        final Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
+        final Set<Class<?>> classEntitySet = new Reflections("ru.otus.hw16.model.entity").getTypesAnnotatedWith(Entity.class);
+        classEntitySet.forEach(aClass -> configuration.addAnnotatedClass(aClass));
+
+        this.sessionFactory = configuration.buildSessionFactory();
     }
 
     private void updateSessionWithTransaction(Consumer<Session> function) {

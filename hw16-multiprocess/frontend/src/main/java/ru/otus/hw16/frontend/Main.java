@@ -1,7 +1,6 @@
 package ru.otus.hw16.frontend;
 
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,8 +19,6 @@ public class Main {
     private String host;
     @Value("${port}")
     private int port;
-    @Value("${clientId}")
-    private String clientId;
 
 
     public static void main(String[] args) {
@@ -36,7 +33,7 @@ public class Main {
     @Bean
     public FrontMessageServerClient getFrontMessageServerClient() {
 
-        return new FrontMessageServerClient(host, port,clientId, "DB");
+        return new FrontMessageServerClient(host, port, "FRONT", "DB");
 
     }
 

@@ -17,7 +17,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     public DevBootstrap(DbService<User> repository) {
         this.repository = repository;
-      }
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {

@@ -56,7 +56,7 @@ public class SocketServer implements SocketServerMBean {
     private void serverMessaging() {
         while (true) {
             for (MessageWorker worker : workers) {
-                final Message message = worker.pool();
+                 Message message = worker.pool();
                 if (message == null) continue;
 
                 if (message instanceof MessageAddressRegistrationRequest) {

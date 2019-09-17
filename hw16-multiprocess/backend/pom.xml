@@ -30,16 +30,21 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
+               </dependency>
         <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            </dependency>
 
-    </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.1.Final</version>
         </dependency>
 
 
@@ -57,27 +62,33 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <finalName>backend</finalName>
         <plugins>
-           <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            &lt;!&ndash;to be imported on other projects&ndash;&gt;
-                            <classifier>app-to-import</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
+            <!-- <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <executions>
+                     <execution>
+                         <goals>
+                             <goal>jar</goal>
+                         </goals>
+                         <phase>package</phase>
+                         <configuration>
+                             &lt;!&ndash;to be imported on other projects&ndash;&gt;
+                             <classifier>app-to-import</classifier>
+                         </configuration>
+                     </execution>
+                 </executions>
+             </plugin>-->
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -86,7 +97,7 @@
                     <fork>true</fork>
                     <mainClass>ru.otus.hw16.backend.Main</mainClass>
                 </configuration>
-                  <executions>
+                <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
@@ -96,35 +107,34 @@
             </plugin>
 
 
+            <!--
+                                <plugin>
+                                    <artifactId>maven-assembly-plugin</artifactId>
 
-<!--
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
+                                    <executions>
+                                        <execution>
+                                            <id>maven-assembly-plugin</id>
 
-                        <executions>
-                            <execution>
-                                <id>maven-assembly-plugin</id>
+                                            <phase>package</phase>
+                                            <goals>
+                                                <goal>single</goal>
+                                            </goals>
+                                        </execution>
+                                    </executions>
+                                    <configuration>
+                                        <appendAssemblyId>false</appendAssemblyId>
+                                    <finalName>backend</finalName>
+                                        <descriptorRefs>
+                                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                                        </descriptorRefs>
+                                        <archive>
 
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        <finalName>backend</finalName>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <archive>
-
-                                <manifest>
-                                    <mainClass>ru.otus.hw16.backend.Main</mainClass>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </plugin>-->
+                                            <manifest>
+                                                <mainClass>ru.otus.hw16.backend.Main</mainClass>
+                                            </manifest>
+                                        </archive>
+                                    </configuration>
+                                </plugin>-->
         </plugins>
     </build>
 </project>

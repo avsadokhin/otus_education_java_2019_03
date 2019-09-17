@@ -15,16 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SpringBootApplication
-@EntityScan({"ru.otus.hw16.model.entity"})
+//@EntityScan({"ru.otus.hw16.model.entity"})
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
       @Value("${host}")
     private String host ;
       @Value("${port}")
     private int port;
-      @Value("${clientId}")
-    private String clientId;
-
 
     public static void main(String[] args) {
         logger.log(Level.INFO, "Starting DB service...");
@@ -38,7 +35,7 @@ public class Main {
     @Bean
     public DbMessageServerClientImpl getDbMessageServerClient(DbService<User> dbService) {
 
-        return new DbMessageServerClientImpl(host, port,clientId, "FRONT", dbService);
+        return new DbMessageServerClientImpl(host, port,"DB", "FRONT", dbService);
 
     }
 

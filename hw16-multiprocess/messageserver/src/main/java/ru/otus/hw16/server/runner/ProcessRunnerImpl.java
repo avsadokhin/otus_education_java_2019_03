@@ -13,12 +13,14 @@ public class ProcessRunnerImpl implements ProcessRunner {
 
     @Override
     public void start(String command) throws IOException {
+        System.out.println("Старт команды процесса: " + command);
         process = runProcess(command);
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         System.out.println("Статус запущенного процесса: " + process.isAlive());
     }
 
