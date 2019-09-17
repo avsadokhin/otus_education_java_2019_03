@@ -7,7 +7,8 @@ public abstract class AddressMessage extends Message{
     private final Address from;
     private final Address to;
 
-    public AddressMessage(Address from, Address to) {
+    public AddressMessage(Address from, Address to, Class<?> clazz) {
+        super(clazz);
         this.from = from;
         this.to = to;
     }

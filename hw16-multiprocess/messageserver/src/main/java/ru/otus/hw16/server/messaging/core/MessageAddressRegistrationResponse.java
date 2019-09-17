@@ -11,6 +11,7 @@ public class MessageAddressRegistrationResponse extends Message {
     private final Address address;
 
     public MessageAddressRegistrationResponse(Address address) {
+        super(MessageAddressRegistrationResponse.class);
         time = System.currentTimeMillis();
         this.address = address;
     }

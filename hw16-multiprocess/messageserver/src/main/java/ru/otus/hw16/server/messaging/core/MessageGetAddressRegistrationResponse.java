@@ -9,6 +9,7 @@ public class MessageGetAddressRegistrationResponse extends Message {
     private final Address address;
 
     public MessageGetAddressRegistrationResponse(Address address) {
+        super(MessageGetAddressRegistrationResponse.class);
         time = System.currentTimeMillis();
         this.address = address;
     }

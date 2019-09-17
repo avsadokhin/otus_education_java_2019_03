@@ -2,7 +2,7 @@ package ru.otus.hw16.backend.dao;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import ru.otus.hw16.backend.entity.User;
+import ru.otus.hw16.model.entity.User;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;

@@ -49,14 +49,20 @@
             <version>2019-03-01-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>ru.otus</groupId>
+            <artifactId>model</artifactId>
+            <version>2019-03-01-SNAPSHOT</version>
+            <classifier>app-to-import</classifier>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
     <build>
         <finalName>backend</finalName>
         <plugins>
-            <plugin>
+           <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
@@ -66,12 +72,12 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <!--to be imported on other projects-->
+                            &lt;!&ndash;to be imported on other projects&ndash;&gt;
                             <classifier>app-to-import</classifier>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>

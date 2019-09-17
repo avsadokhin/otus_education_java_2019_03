@@ -6,7 +6,7 @@ import ru.otus.hw16.server.messaging.core.Addressee;
 
 public class MessageGetUserCollectionRequest extends AddressMessage {
     public MessageGetUserCollectionRequest(Address from, Address to) {
-        super(from, to);
+        super(from, to, MessageGetUserCollectionRequest.class);
     }
 
     @Override

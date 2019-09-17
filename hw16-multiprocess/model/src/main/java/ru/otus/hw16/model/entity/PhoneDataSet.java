@@ -1,25 +1,24 @@
-package ru.otus.hw16.backend.entity;
+package ru.otus.hw16.model.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "address")
-public class AddressDataSet {
+@Table(name = "phone")
+public class PhoneDataSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "street")
-    private String street;
+    @Column(name = "number")
+    private String number;
 
-    public AddressDataSet() {
-
+    public PhoneDataSet() {
     }
 
-    public AddressDataSet(String street) {
-        this.street = street;
+    public PhoneDataSet(String number) {
+        this.number = number;
     }
 
     public Long getId() {
@@ -30,33 +29,34 @@ public class AddressDataSet {
         this.id = id;
     }
 
-    public String getStreet() {
-        return street;
+    public String getNumber() {
+        return number;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AddressDataSet that = (AddressDataSet) o;
+        PhoneDataSet that = (PhoneDataSet) o;
         return Objects.equals(id, that.id) &&
-                Objects.equals(street, that.street);
+                Objects.equals(number, that.number);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, street);
+        return Objects.hash(id, number);
     }
 
     @Override
     public String toString() {
-        return "AddressDataSet{" +
+        return "PhoneDataSet{" +
                 "id=" + id +
-                ", street='" + street + '\'' +
+                ", number='" + number + '\'' +
                 '}';
     }
 }
+

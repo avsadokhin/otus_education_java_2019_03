@@ -12,6 +12,7 @@
         <module>messageserver</module>
         <module>backend</module>
         <module>frontend</module>
+        <module>model</module>
     </modules>
 
     <dependencies>

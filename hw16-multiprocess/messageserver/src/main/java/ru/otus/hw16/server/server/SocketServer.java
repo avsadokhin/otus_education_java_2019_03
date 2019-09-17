@@ -40,7 +40,7 @@ public class SocketServer implements SocketServerMBean {
 
     public void start() throws Exception {
         excecutorService.submit(this::serverMessaging);
-        logger.log(Level.INFO, "SocketServer стартован." + " port:" + PORT + " Ожидание соединений...");
+        logger.log(Level.INFO, "SocketServer started." + " port:" + PORT + " Waiting for connection...");
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 
             while (!excecutorService.isShutdown()) {
@@ -48,7 +48,7 @@ public class SocketServer implements SocketServerMBean {
                 SocketMessageWorker worker = new SocketMessageWorker(socket);
                 worker.init();
                 workers.add(worker);
-                logger.log(Level.INFO, "Установлено соединение: " + socket);
+                logger.log(Level.INFO, "Connection accepted: " + socket);
             }
         }
     }
@@ -56,23 +56,25 @@ public class SocketServer implements SocketServerMBean {
     private void serverMessaging() {
         while (true) {
             for (MessageWorker worker : workers) {
-                Message message = worker.pool();
+                final Message message = worker.pool();
                 if (message == null) continue;
-                logger.log(Level.INFO, "Получено сообщение: " + message.toString());
 
                 if (message instanceof MessageAddressRegistrationRequest) {
+                    logger.log(Level.INFO, "Message receipt: " + message.toString());
                     final MessageAddressRegistrationRequest request = (MessageAddressRegistrationRequest) message;
                     final Address address = new Address(request.getAddressName());
                     addressMessageWorkerMap.put(address, worker);
                     clientAddressMap.putIfAbsent(request.getAddressName(), new ConcurrentLinkedDeque<>());
                     clientAddressMap.get(request.getAddressName()).add(address);
-                    logger.log(Level.INFO, "Зарегистрирован адрес: " + address);
+                    logger.log(Level.INFO, "Successful address registration in message system: " + address);
                     worker.send(new MessageAddressRegistrationResponse(address));
-                    logger.log(Level.INFO, "Отправлен ответ о регистрации");
+                    logger.log(Level.INFO, "Address registration response to client...");
 
                     continue;
                 } else if (message instanceof MessageGetAddressRegistrationRequest) {
+
                     final MessageGetAddressRegistrationRequest request = (MessageGetAddressRegistrationRequest) message;
+                    logger.log(Level.INFO, "Get Address registration request to client "+request.getAddressName());
                     if (clientAddressMap.containsKey(request.getAddressName())) {
                         worker.send(new MessageGetAddressRegistrationResponse(clientAddressMap.get(request.getAddressName()).poll()));
                     } else {
@@ -84,10 +86,10 @@ public class SocketServer implements SocketServerMBean {
                     if (addressMessageWorkerMap.containsKey(request.getTo())) {
                         addressMessageWorkerMap.get(request.getTo()).send(message);
                     } else {
-                        logger.log(Level.WARNING, "Адрес назначение не определен: " + request.getTo());
+                        logger.log(Level.WARNING, "Destination address unknown: " + request.getTo());
                     }
                 }
-                else logger.log(Level.WARNING, "Тип сообщения не определен: " + message.getClass());
+                else logger.log(Level.WARNING, "Message type unknown: " + message.getClass());
             }
             try {
                 Thread.sleep(MIRROR_DELAY_MS);

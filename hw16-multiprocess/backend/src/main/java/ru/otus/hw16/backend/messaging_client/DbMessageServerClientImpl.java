@@ -1,14 +1,12 @@
 package ru.otus.hw16.backend.messaging_client;
 
-import org.springframework.stereotype.Service;
 import ru.otus.hw16.backend.dbservice.DbService;
-import ru.otus.hw16.backend.entity.User;
+import ru.otus.hw16.model.entity.User;
 import ru.otus.hw16.server.client.MessageServerClientImpl;
 import ru.otus.hw16.server.messaging.core.Message;
 import ru.otus.hw16.server.messaging.messages.MessageCreateUserRequest;
 import ru.otus.hw16.server.messaging.messages.MessageGetUserCollectionRequest;
 import ru.otus.hw16.server.messaging.messages.MessageGetUserCollectionResponse;
-import ru.otus.hw16.server.server.SocketServer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,7 +29,7 @@ public class DbMessageServerClientImpl extends MessageServerClientImpl {
         while (true) {
             try {
                 final Message message = getSocketMessageWorker().take();
-                logger.log(Level.INFO, "Получено сообщение: " + message);
+                logger.log(Level.INFO, "Message received: " + message);
                 processMessageType(message);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -46,12 +44,12 @@ public class DbMessageServerClientImpl extends MessageServerClientImpl {
         } else if (message instanceof MessageCreateUserRequest) {
             processMessageCreateUserRequest((MessageCreateUserRequest) message);
         } else {
-            logger.log(Level.WARNING, "Получено неизвестного типа сообщение: " + message);
+            logger.log(Level.WARNING, "Message type unknown receipt: " + message);
         }
     }
 
     private void processMessageCreateUserRequest(MessageCreateUserRequest request) {
-        final User user = (User) gson.fromJson(request.getJsonMessage(), request.getClazz());
+        final User user = request.getUser();
         dbService.create(user);
     }
 
@@ -59,10 +57,11 @@ public class DbMessageServerClientImpl extends MessageServerClientImpl {
 
         final List<User> contentList = dbService.findAll();
         if (contentList == null) {
-            logger.log(Level.INFO, "Список пользователей пуст");
+            logger.log(Level.INFO, "User collection is empty");
         } else {
+
             getSocketMessageWorker().send(new MessageGetUserCollectionResponse(
-                    request.getTo(), request.getFrom(), gson.toJson(contentList, contentList.getClass()), contentList.getClass())
+                    request.getTo(), request.getFrom(), contentList)
             );
 
         }

@@ -1,13 +1,24 @@
 package ru.otus.hw16.server.messaging.messages;
 
 
+import ru.otus.hw16.model.entity.User;
 import ru.otus.hw16.server.messaging.core.Address;
-import ru.otus.hw16.server.messaging.core.MessageJsonType;
+import ru.otus.hw16.server.messaging.core.AddressMessage;
+import ru.otus.hw16.server.messaging.core.Addressee;
 
-import java.util.logging.Level;
+public class MessageCreateUserRequest extends AddressMessage {
+    User user;
+    public MessageCreateUserRequest(Address from, Address to, User user) {
+        super(from, to, MessageCreateUserRequest.class);
+        this.user = user;
+    }
 
-public class MessageCreateUserRequest extends MessageJsonType {
-    public MessageCreateUserRequest(Address from, Address to, String jsonMessage, Class<?> clazz) {
-        super(from, to, clazz, jsonMessage);
+    public User getUser() {
+        return user;
+    }
+
+    @Override
+    public void exec(Addressee addressee) {
+
     }
 }

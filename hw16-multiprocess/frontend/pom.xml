@@ -45,7 +45,7 @@
          </dependency>
         <dependency>
             <groupId>ru.otus</groupId>
-            <artifactId>backend</artifactId>
+            <artifactId>model</artifactId>
             <version>2019-03-01-SNAPSHOT</version>
             <classifier>app-to-import</classifier>
             <scope>compile</scope>

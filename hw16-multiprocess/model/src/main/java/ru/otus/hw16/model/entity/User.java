@@ -1,4 +1,4 @@
-package ru.otus.hw16.backend.entity;
+package ru.otus.hw16.model.entity;
 
 import javax.persistence.*;
 import java.util.List;

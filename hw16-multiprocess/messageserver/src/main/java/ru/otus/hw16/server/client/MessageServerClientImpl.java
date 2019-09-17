@@ -23,7 +23,7 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
             this.socketMessageWorker = new SocketMessageWorker(socket);
             socketMessageWorker.init();
         } catch (IOException e) {
-            logger.log(Level.INFO, "Ошибка соединения host:" + host + ", port:" + port);
+            logger.log(Level.INFO, "Connection error to host:" + host + ", port:" + port);
             throw new RuntimeException(e);
         }
 
@@ -43,7 +43,7 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
         try {
             final MessageAddressRegistrationResponse addressRegistrationResponse = (MessageAddressRegistrationResponse) socketMessageWorker.take();
             address = addressRegistrationResponse.getAddress();
-            logger.log(Level.INFO, "Регистрация адреса '" + addressName + "'. Получен адрес от MessageServer: " + address);
+            logger.log(Level.INFO, "Address registration of '" + addressName + "'. Address received by MessageServer: " + address);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -55,6 +55,7 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
     public Address registerToRequest(String addressName) {
         Address address = null;
         while (address == null) {
+            logger.log(Level.INFO, "Address request to client '" + addressName);
             socketMessageWorker.send(new MessageGetAddressRegistrationRequest(addressName));
             try {
                 MessageGetAddressRegistrationResponse getAddressRegistrationResponse = (MessageGetAddressRegistrationResponse) socketMessageWorker.take();
@@ -64,7 +65,7 @@ public abstract class MessageServerClientImpl implements MessageServerClient {
                 e.printStackTrace();
             }
         }
-        logger.log(Level.INFO, "Запрос адреса стороны '" + addressName + "'. Получен  адрес от MessageServer: " + address);
+        logger.log(Level.INFO, "Address request from client '" + addressName + "'. Address receive from MessageServer: " + address);
         return address;
     }
 

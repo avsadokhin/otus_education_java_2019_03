@@ -3,15 +3,11 @@ package ru.otus.hw16.backend.dbservice;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw16.backend.dao.EntityDao;
 import ru.otus.hw16.backend.dao.UserDaoHibernateImpl;
-import ru.otus.hw16.backend.entity.User;
-import ru.otus.hw16.server.messaging.MessageSystemContext;
-import ru.otus.hw16.server.messaging.core.Address;
-import ru.otus.hw16.server.workers.MessageWorker;
+import ru.otus.hw16.model.entity.User;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.Serializable;

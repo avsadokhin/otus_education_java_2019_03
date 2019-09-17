@@ -8,6 +8,7 @@ public class MessageGetAddressRegistrationRequest extends Message {
     private final String addressName;
 
     public MessageGetAddressRegistrationRequest(String addressName) {
+        super(MessageGetAddressRegistrationRequest.class);
         time = System.currentTimeMillis();
         this.addressName = addressName;
     }

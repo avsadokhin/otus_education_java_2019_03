@@ -56,59 +56,49 @@ public class SocketMessageWorker implements MessageWorker {
 
 
     private void sendMessage() {
-        try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+        try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             while (socket.isConnected()) {
-                final Message message = output.take();
-            /*    String json = new Gson().toJson(message);
+                Message message = output.take();
+                String json = getJsonFromMessage(message);
                 out.println(json);
-                out.println();*/
-                out.writeObject(message);
+                out.println();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+
     private void receiveMessage() {
-       /* try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             String inputLine;
             StringBuilder stringBuilder = new StringBuilder();
-            while ((inputLine = reader.readLine()) != null){
+            while ((inputLine = reader.readLine()) != null) {
                 stringBuilder.append(inputLine);
-                if (inputLine.isEmpty()){
+                if (inputLine.isEmpty()) {
                     String json = stringBuilder.toString();
-                    Message message = getMessageFromGson(json);
+                    Message message = getMessageFromJson(json);
                     input.add(message);
                     stringBuilder = new StringBuilder();
                 }
             }
-        }  catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-            while (socket.isConnected()) {
-                final Message message = (Message) in.readObject();
-                input.add(message);
-            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
-
     }
 
-    private Message getMessageFromGson(String json) throws ClassNotFoundException {
-
+    private Message getMessageFromJson(String json) throws ClassNotFoundException {
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(json);
-        //String className = String.valueOf(jsonObject.get(Message.CLASS_NAME_VARIABLE));
-        Class<?> messageClass = MessageAddressRegistrationRequest.class;
+        Class<?> cl = Class.forName(jsonObject.get("className").getAsString());
 
-        return (Message) new Gson().fromJson(json, messageClass);
+        return (Message) new Gson().fromJson(json, cl);
     }
+
+
+    private String getJsonFromMessage(Message message) {
+        return new Gson().toJson(message);
+    }
+
+
 }

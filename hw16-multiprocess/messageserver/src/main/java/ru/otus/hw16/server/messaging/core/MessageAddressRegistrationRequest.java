@@ -12,6 +12,8 @@ public class MessageAddressRegistrationRequest extends Message {
     private final String addressName;
 
     public MessageAddressRegistrationRequest(String addressName) {
+        super(MessageAddressRegistrationRequest.class);
+
         time = System.currentTimeMillis();
         this.addressName = addressName;
     }
