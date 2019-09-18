@@ -1,9 +1,6 @@
 package ru.otus.hw16.server.messaging.core;
 
 
-import ru.otus.hw16.server.messaging.core.Address;
-import ru.otus.hw16.server.messaging.core.Message;
-
 public class MessageGetAddressRegistrationResponse extends Message {
     private final long time;
     private final Address address;

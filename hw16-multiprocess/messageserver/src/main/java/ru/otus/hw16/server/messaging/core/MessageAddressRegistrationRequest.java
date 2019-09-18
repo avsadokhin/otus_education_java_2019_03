@@ -1,12 +1,5 @@
 package ru.otus.hw16.server.messaging.core;
 
-
-import ru.otus.hw16.server.messaging.core.Address;
-import ru.otus.hw16.server.messaging.core.Addressee;
-import ru.otus.hw16.server.messaging.core.Message;
-
-import java.io.Serializable;
-
 public class MessageAddressRegistrationRequest extends Message {
     private final long time;
     private final String addressName;

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.otus.hw16.model.entity.User;
@@ -14,11 +13,6 @@ import ru.otus.hw16.model.entity.User;
 public class UserPageController {
 
      private  FrontService frontService;
-
-    /*public UserPageController(FrontService frontService) {
-        this.frontService = frontService;
-
-    }*/
 
     @Autowired
     public void setFrontService(FrontService frontService) {

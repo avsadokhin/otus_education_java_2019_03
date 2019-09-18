@@ -1,8 +1,5 @@
 package ru.otus.hw16.server.messaging.core;
 
-
-import ru.otus.hw16.server.messaging.core.Message;
-
 public class MessageGetAddressRegistrationRequest extends Message {
     private final long time;
     private final String addressName;

@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ru.otus.hw16.server.messaging.core.Message;
-import ru.otus.hw16.server.messaging.core.MessageAddressRegistrationRequest;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;

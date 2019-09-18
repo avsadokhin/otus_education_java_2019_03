@@ -23,16 +23,9 @@ import java.util.function.Function;
 public class DbServiceHibernateUserImpl implements DbService {
 
     private final SessionFactory sessionFactory;
-/*
-
-    public DbServiceHibernateUserImpl(Configuration configuration) {
-        this.sessionFactory = configuration.buildSessionFactory();
-    }
-*/
 
     @Autowired
-    public DbServiceHibernateUserImpl(/*Configuration configuration*//*,EntityManagerFactory sessionFactory*/) {
-       //this.sessionFactory = sessionFactory.unwrap(SessionFactory.class);
+    public DbServiceHibernateUserImpl() {
         final Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
         final Set<Class<?>> classEntitySet = new Reflections("ru.otus.hw16.model.entity").getTypesAnnotatedWith(Entity.class);
         classEntitySet.forEach(aClass -> configuration.addAnnotatedClass(aClass));
