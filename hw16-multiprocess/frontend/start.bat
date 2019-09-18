@@ -1,0 +1,1 @@
+java -jar ./target/front.jar --server.port=8096 --host=localhost --port=5050 --clientId=FRONT
